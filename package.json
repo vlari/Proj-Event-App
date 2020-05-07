@@ -1,0 +1,41 @@
+{
+  "name": "proj-event-app",
+  "version": "1.0.0",
+  "description": "event app api.",
+  "main": "app.js",
+  "scripts": {
+    "start:dev": "nodemon --exec babel-node ./src/app.js",
+    "start:prod": "babel ./src/app.js --out-file ./dist/app.js",
+    "seed:events": "nodemon --exec babel-node ./src/db/seeds/eventSeed.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vlari/Proj-Event-App.git"
+  },
+  "keywords": [
+    "api"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vlari/Proj-Event-App/issues"
+  },
+  "homepage": "https://github.com/vlari/Proj-Event-App#readme",
+  "dependencies": {
+    "chalk": "^4.0.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.9.12",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.9.6",
+    "@babel/node": "^7.8.7",
+    "@babel/preset-env": "^7.9.6",
+    "eslint": "^6.8.0",
+    "esm": "^3.2.25",
+    "nodemon": "^2.0.3"
+  }
+}

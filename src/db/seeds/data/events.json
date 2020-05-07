@@ -1,0 +1,72 @@
+[
+    {
+        "name": "Sausage party",
+        "organizer": {
+            "name": "John Doe",
+            "website": "johndoe.com"
+        },
+        "description": "This is a party where everybody can enjoy the true sausages.",
+        "date": "04/04/2020",
+        "address": "This will be there.",
+        "location": {
+            "type" : "Point",
+            "coordinates" : [
+                -122.5,
+                37.7
+            ],
+            "fullAddress": "There",
+            "street": "Main street.",
+            "city": "New York",
+            "zipCode": "11111",
+            "country": "United States"
+        },
+        "tickets": [
+            {
+                "name": "average",
+                "price": "12"
+            },
+            {
+                "name": "vip",
+                "price": "20"
+            }
+        ],
+        "tags": [
+            "Entertainment",
+            "Food"
+        ],
+        "imageUrl": "None"
+    },
+    {
+        "name": "Dance Festival",
+        "organizer": {
+            "name": "Mila Romanov",
+            "website": "udance.com"
+        },
+        "description": "Enjoy and learn while dancing with many from ukraine people.",
+        "date": "04/05/2020",
+        "address": "This will be there.",
+        "location": {
+            "type" : "Point",
+            "coordinates" : [
+                50.45,
+                30.52
+            ],
+            "fullAddress": "There",
+            "street": "Main street.",
+            "city": "Kiev",
+            "zipCode": "11111",
+            "country": "Ukraine"
+        },
+        "tickets": [
+            {
+                "name": "average",
+                "price": "12"
+            }
+        ],
+        "tags": [
+            "Entertainment",
+            "Music"
+        ],
+        "imageUrl": "None"
+    }
+]
