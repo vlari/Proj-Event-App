@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import geoParser from '../../../utils/geoParser';
 const Schema = mongoose.Schema;
 
 const eventSchema = new Schema({
@@ -6,6 +7,7 @@ const eventSchema = new Schema({
         type: String,
         required: [true, 'Please add an event name']
     },
+    userId: String,
     organizer: {
         name: {
             type: String,
@@ -52,6 +54,29 @@ const eventSchema = new Schema({
 },
 {
     timestamps: true
+});
+
+eventSchema.pre('save', function(next) {
+    geoParser.geocode(this.address)
+        .then(result => {
+            const locationOptions = result[0];
+
+            this.location = {
+                type: 'Point',
+                coordinates: [
+                    locationOptions.longitude, 
+                    locationOptions.latitude
+                ],
+                fullAddress: locationOptions.formattedAddress,
+                street: locationOptions.streetName,
+                city: locationOptions.city,
+                zipCode: locationOptions.zipcode,
+                country: locationOptions.country
+            }
+
+            this.address = undefined;
+            next();
+        });
 });
 
 export default mongoose.model('Event', eventSchema);
