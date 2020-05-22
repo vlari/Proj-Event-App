@@ -2,6 +2,12 @@ import Event from '../../db/models/event';
 const ErrorResponse = require('../../../utils/errorResponse');
 
 export const getEvents = (req, res, next) => {
+
+    const queryParams = { ...req.query };
+
+    
+
+
     Event.find()
         .then(events => {
             res.status(200).json({ data: events });

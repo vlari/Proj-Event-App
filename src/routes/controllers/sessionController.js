@@ -1,5 +1,6 @@
 const ErrorResponse = require('../../../utils/errorResponse');
 import User from '../../db/models/user';
+import Collection from '../../db/models/collection';
 import env from '../../config/env';
 import sendEmail from '../../../utils/emailSender';
 import crypto from 'crypto';
@@ -7,6 +8,7 @@ import { recoverPasswordTemplate } from '../../../utils/emailTemplates';
 
 export const signUp = (req, res, next) => {
   const { name, email, dateOfBirth, password } = req.body;
+  let newUser = null;
 
   User.create({
     name,
@@ -15,12 +17,19 @@ export const signUp = (req, res, next) => {
     password,
   }).then(
     (user) => {
-        getToken(user, 200, res);
-    },
-    (error) => {
-      next(new ErrorResponse('Error while signing up new user.', 400));
-    }
-  );
+      newUser = user;
+
+      return  Collection.create({
+          userId: user._id,
+          events: []
+        });
+  })
+  .then(collection => {
+    getToken(newUser, 200, res);
+  },
+  error => {
+    next(new ErrorResponse('Error while signing up new user.', 400));
+  });
 };
 
 export const login = (req, res, next) => {
