@@ -1,4 +1,5 @@
 import Event from '../../db/models/event';
+import Category from '../../db/models/category';
 const ErrorResponse = require('../../../utils/errorResponse');
 
 export const getEvents = (req, res, next) => {
@@ -32,6 +33,16 @@ export const getEvent = (req, res, next) => {
                 next(
                     new ErrorResponse('Event not found', 404)
                 );
+        });
+};
+
+export const getEventCategories = (req, res, next) => {
+    Category.find()
+        .then(categories => {
+            res.status(200).json({ data: categories });
+        },
+        error => {
+            next(error);
         });
 };
 

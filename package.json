@@ -18,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/vlari/Proj-Event-App/issues"
   },
-  "homepage": "https://github.com/vlari/Proj-Event-App#readme"
+  "homepage": "https://github.com/vlari/Proj-Event-App#readme",
+  "dependencies": {
+    "react-router-dom": "^5.2.0"
+  }
 }
