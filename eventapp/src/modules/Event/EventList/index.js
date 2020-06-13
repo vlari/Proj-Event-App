@@ -1,40 +1,41 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useContext, useEffect, useState } from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
+import Button from '@material-ui/core/Button';
+import EventListItem from '../../Event/EventListItem';
+import EventSearchBar from '../../Event/EventSearchBar';
 import { makeStyles } from '@material-ui/core/styles';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
-import Box from '@material-ui/core/Box';
-import Select from '@material-ui/core/Select';
-import Radio from '@material-ui/core/Radio';
-import EventItem from '../../Event/EventItem';
+import EventFilter from '../../Event/EventFilter';
+import EventContext from '../../../context/event/eventContext';
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 
 const useStyles = makeStyles( (theme) => ({
   layout: {
   },
-  formControl: {
-    margin: theme.spacing(1),
-    minWidth: 130,
-  },
-  selectField: {
-    left: '30px'
-  },
   actionPanel: {
     backgroundColor: '#f2f2f2',
-    height: '900px'
-  }
+    height: '900px',
+    paddingLeft: '15px !important'
+  },
+  pagination: {}
 }));
 
 const EventList = () => {
+  const eventContext = useContext(EventContext);
+  const { events, getEvents } = eventContext;
   const classes = useStyles();
-  const [date, setDate] = React.useState('Today');
-  const [category, setCategory] = React.useState('');
-  const [price, setPrice] = React.useState('anyprice');
 
-  const handleChange = (event) => {
-    setDate(event.target.value);
-  };
+  useEffect(() => {
+    getEvents();
+    // eslint-disable-next-line
+  }, []);
+
+  const eventList = (
+    events.map( (event, index) => (
+      <EventListItem key={index} event={event} />  
+    ))
+  );
 
   return (
     <Fragment>
@@ -42,131 +43,32 @@ const EventList = () => {
       <Grid 
         container 
         maxwidth="lg"
-        className={classes.layout}>
+        className={classes.layout}
+        spacing={8}>
         <Grid item md={2} className={classes.actionPanel}>
-          <form >
-            <Typography 
-              gutterbutton 
-              component="p" 
-              variant="p"
-              >
-                <Box fontWeight="fontWeightMedium" m={1} fontSize={18}>
-                  Filters
-                </Box>
-            </Typography>
-            <br/>
-            <FormControl className={classes.formControl}>
-              <Typography 
-                gutterbutton 
-                component="p" 
-                variant="p"
-                >
-                  <Box fontWeight="fontWeightMedium" m={1} fontSize={18}>
-                    Date
-                  </Box>
-              </Typography>
-              <Select
-                labelId="datelabel"
-                id="date-select"
-                value={date}
-                color="primary"
-                onChange={handleChange}
-                className={classes.selectField}
-              >
-                <MenuItem value={10}>Today</MenuItem>
-                <MenuItem value={20}>Tomorrow</MenuItem>
-                <MenuItem value={30}>Pick a date</MenuItem>
-              </Select>
-            </FormControl>
-            <FormControl className={classes.formControl}>
-              <Typography 
-                gutterbutton 
-                component="p" 
-                variant="p"
-                >
-                  <Box fontWeight="fontWeightMedium" m={1} fontSize={18}>
-                    Category
-                  </Box>
-              </Typography>
-              <Select
-                labelId="categorylabel"
-                id="category-select"
-                value={category}
-                color="primary"
-                onChange={handleChange}
-                className={classes.selectField}
-              >
-                <MenuItem value={10}>Today</MenuItem>
-                <MenuItem value={20}>Tomorrow</MenuItem>
-                <MenuItem value={30}>Pick a date</MenuItem>
-              </Select>
-            </FormControl>
-            <FormControl className={classes.formControl}>
-              <Typography 
-                gutterbutton 
-                component="p" 
-                variant="p"
-                >
-                  <Box fontWeight="fontWeightMedium" m={1} fontSize={18}>
-                    Price
-                  </Box>
-              </Typography>
-              {/* <FormControl component="fieldset" className={classes.selectField}> */}
-                {/* <RadioGroup 
-                  aria-label="price" 
-                  name="price" 
-                  value={price} 
-                  onChange={handleChange}
-                  style={{ fontSize: '14px'}}
-                  >
-                  <FormControlLabel value="anyprice" control={ <Radio color="primary"/>} />
-                  <FormControlLabel value="free" control={<Radio color="primary" />} label="Free"/>
-                  <FormControlLabel value="paid" control={<Radio color="primary" />} label="Paid"/>
-                </RadioGroup> */}
-                <FormControl component="fieldset" className={classes.selectField}>
-                  <Typography component="p" variant="p">
-                    <Radio
-                      checked={price === 'anyprice'}
-                      onChange={handleChange}
-                      value="anyprice"
-                      name="anyprice"
-                      inputProps={{ 'aria-label': 'A' }}
-                      color="primary"
-                    />
-                    Any Price
-                  </Typography>
-                  <Typography component="p" variant="p">
-                    <Radio
-                      checked={price === 'free'}
-                      onChange={handleChange}
-                      value="free"
-                      name="free"
-                      inputProps={{ 'aria-label': 'B' }}
-                      color="primary"
-                    />
-                    Free
-                  </Typography>
-                  <Typography component="p" variant="p">
-                    <Radio
-                      checked={price === 'paid'}
-                      onChange={handleChange}
-                      value="paid"
-                      name="paid"
-                      inputProps={{ 'aria-label': 'C' }}
-                      color="primary"
-                    />
-                    Paid
-                  </Typography>
-              </FormControl>
-            </FormControl>
-          </form>
+          <EventFilter getEvents={getEvents} />
         </Grid>
         <Grid item md={8}>
-          <EventItem isFlat={true} />           
+          <EventSearchBar />
+          { eventList }       
         </Grid>
       </Grid>
+      <div className={classes.pagination}>
+        <Grid container>
+          <Grid item md={6}>
+            <Button color="primary">
+              <ArrowBackIosIcon />
+            </Button>
+          </Grid>
+          <Grid item md={6}>
+            <Button color="primary">
+              <ArrowForwardIosIcon />
+            </Button>
+          </Grid>
+        </Grid>
+    </div>
     </Fragment>
   )
 }
 
-export default EventList
+export default EventList;

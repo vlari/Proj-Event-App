@@ -3,15 +3,35 @@ import Category from '../../db/models/category';
 const ErrorResponse = require('../../../utils/errorResponse');
 
 export const getEvents = (req, res, next) => {
+    const page = parseInt(req.queryParams.page, 10) || 1;
+    const limit = parseInt(req.queryParams.limit, 10) || 1;
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
 
-    const queryParams = { ...req.query };
-
-    
-
-
-    Event.find()
+    Event.find(req.queryParams)
+        .skip(startIndex)
+        .limit(limit)
         .then(events => {
-            res.status(200).json({ data: events });
+
+            const pagination = {};
+  
+            if (endIndex < events.length) {
+                pagination.next = {
+                    page: page + 1,
+                    limit
+                };
+            }
+
+            console.log(startIndex)
+        
+            if (startIndex > 0) {
+                pagination.prev = {
+                    page: page - 1,
+                    limit
+                };
+            }
+
+            res.status(200).json({ count: events.length , data: events, pagination });
         },
         error => {
             next(error);

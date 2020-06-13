@@ -12,7 +12,7 @@ import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 
 const useStyles = makeStyles({
   root: {
-    maxWidth: props => props.isFlat ? 500 : 250,
+    maxWidth: 250,
   },
   title: {
     color: '#3F51B5'
@@ -31,39 +31,7 @@ const useStyles = makeStyles({
 });
 
 const EventItem = (props) => {
-  const classes = useStyles(props);
-
-  const cardDetails = (
-    <CardContent className={classes.content}>
-          <IconButton color="default" aria-label="delete">
-            <ShareIcon />
-          </IconButton>
-          <IconButton color="default" aria-label="delete">
-            <FavoriteBorderIcon />
-          </IconButton>
-          <Chip
-            label="Free"
-            color="default"
-            variant="outline"
-            className={classes.priceDetail}/>
-          <Typography gutterBottom className={classes.title} variant="p" component="h4">
-            Mon, Jun 1, 2020 10:00 AM AST
-          </Typography>
-          <Typography component="h3">
-            The best meat party
-          </Typography>
-        </CardContent>
-  );
-
-  const cardMedia = (
-    <CardMedia
-          component="img"
-          alt="Party"
-          height="140"
-          image="https://media.timeout.com/images/105347841/630/472/image.jpg"
-          title="Party"
-        />
-  );
+  const classes = useStyles();
 
   return (
     <Card className={classes.root}>
@@ -95,9 +63,6 @@ const EventItem = (props) => {
           The best meat party
         </Typography>
       </CardContent>
-      {/* { cardDetails }
-      { cardMedia } */}
-
     </Card>
   );
 }

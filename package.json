@@ -4,6 +4,9 @@
   "description": "Event app using mern stack",
   "main": "index.js",
   "scripts": {
+    "dev": "concurrently \"npm run start:api\" \"npm run start:app\" --names \"api,app\" ",
+    "start:api": "npm run start --prefix eventapp_api",
+    "start:app": "npm run start --prefix eventapp",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -20,6 +23,7 @@
   },
   "homepage": "https://github.com/vlari/Proj-Event-App#readme",
   "dependencies": {
+    "concurrently": "^5.2.0",
     "react-router-dom": "^5.2.0"
   }
 }

@@ -2,6 +2,7 @@ import React from 'react';
 import EventList from './modules/Event/EventList';
 import Login from './modules/Session/Login';
 import ForgotPassword from './modules/Session/ForgotPassword';
+import FavoriteList from './modules/Account/FavoriteList';
 
 const Home = React.lazy(() => import('./modules/Pages/Home'));
 
@@ -25,6 +26,11 @@ const routes = [
     path: '/forgotpassword',
     exact: true,
     component: ForgotPassword
+  },
+  {
+    path: '/favorites',
+    exact: true,
+    component: FavoriteList
   }
 ];
 

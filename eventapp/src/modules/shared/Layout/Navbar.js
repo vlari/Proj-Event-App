@@ -174,7 +174,7 @@ const Navbar = () => {
 
   return (
     <div className={classes.grow}>
-    <AppBar position="sticky" color="default">
+    <AppBar position="fixed" color="default">
       <Toolbar>
         <Link component={RouterLink} className={classes.navbarLink} to='/'>
           <Typography className={classes.title} variant="h6" noWrap>
@@ -240,6 +240,7 @@ const Navbar = () => {
         </div>
       </Toolbar>
     </AppBar>
+    <Toolbar />
     {renderMobileMenu}
     {renderMenu}
   </div>
