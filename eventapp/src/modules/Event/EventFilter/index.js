@@ -1,15 +1,14 @@
 import React, { 
     Fragment, 
-    useContext, 
-    useState } from 'react';
+    useState,
+    useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Box from '@material-ui/core/Box';
-import Select from '@material-ui/core/Select';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
+import EventContext from '../../../context/event/eventContext';
 
 const useStyles = makeStyles( (theme) => ({
   formControl: {
@@ -28,6 +27,7 @@ const useStyles = makeStyles( (theme) => ({
 }));
 
 const EventFilter = ({ getEvents }) => {
+  const eventContext = useContext(EventContext);
   const classes = useStyles(); 
 
   const dateState = {
@@ -53,7 +53,6 @@ const EventFilter = ({ getEvents }) => {
 
   const getDateValue = (name) => {
     let dateValue;
-      const currentDate = new Date();
       switch (name) {
         case 'anyDate':
           dateValue = '';
@@ -116,6 +115,10 @@ const EventFilter = ({ getEvents }) => {
       date: dateTemplate.value,
       price: priceTemplate.value
     };
+
+    if (eventContext.filter.filter) {
+      request.filter = eventContext.filter.filter;
+    }
 
     getEvents(request);
   }

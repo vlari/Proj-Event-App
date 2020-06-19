@@ -10,6 +10,8 @@ import IconButton from '@material-ui/core/IconButton';
 import ShareIcon from '@material-ui/icons/Share';
 import Grid from '@material-ui/core/Grid';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
+import { Link as RouterLink } from 'react-router-dom';
+import Link from '@material-ui/core/Link';
 
 const useStyles = makeStyles({
   root: {
@@ -40,22 +42,28 @@ const useStyles = makeStyles({
   }
 });
 
-const EventItem = ({ event }) => {
+const EventItem = (props) => {
   const classes = useStyles();
+  //const seeDetail = () => props.history.push(`/event/${id}`);
+  const { event, id } = props;
   const eventDate = new Date(Date.parse(event.date));
+
 
   return (
     <Grid container maxWidth="md">
       <Grid item xs={12} sm={12} md={12}>
         <Card className={classes.root}>
-          <CardActionArea className={classes.cardMedia}>
-            <CardMedia
-              component="img"
-              alt="Party"
-              height="140"
-              image="https://media.timeout.com/images/105347841/630/472/image.jpg"
-              title="Party"
-            />
+          <CardActionArea 
+            className={classes.cardMedia}>
+            <Link component={RouterLink} to={`/events/${id}`}>
+              <CardMedia
+                component="img"
+                alt="Party"
+                height="140"
+                image="https://media.timeout.com/images/105347841/630/472/image.jpg"
+                title="Party"
+              />
+            </Link>
           </CardActionArea>
           <CardContent className={classes.details}>
             <Typography gutterBottom className={classes.title} variant="p" component="h4">

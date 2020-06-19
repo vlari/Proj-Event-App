@@ -45,7 +45,7 @@ const Home = props => {
   return (
     <React.Fragment>
       <CssBaseline />
-      <Container maxWidth="lg">
+      <Container>
         <br />
         <Grid container>
           <Grid item xs={12} sm={4} md={4} className={classes.mainMessage}>

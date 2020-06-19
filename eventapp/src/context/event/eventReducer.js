@@ -1,22 +1,29 @@
 import {
   GET_EVENTS,
-  EVENT_ERROR
+  GET_EVENT,
+  EVENT_ERROR,
 } from '../states';
 
 export default (state, action) => {
   switch(action.type) {
     case GET_EVENTS:
+      const response = action.payload.response;
       return {
         ...state,
-        events: action.payload
+        events: response.data,
+        paging: response.pagination,
+        filter: action.payload.filter,
+        textFilter: action.payload.textFilter
+      };
+    case GET_EVENT:
+      return {
+        ...state,
+        event: action.payload.data
       };
     case EVENT_ERROR:
-      console.log(action.payload);
       return {
         ...state,
-        events: action.payload,
-        pagination: action.payload.pagination,
-        filter: action.payload.filter
+        event: action.payload
       };
     default:
       return state;

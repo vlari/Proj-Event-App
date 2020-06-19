@@ -1,5 +1,6 @@
 import React from 'react';
 import EventList from './modules/Event/EventList';
+import EventDetail from './modules/Event/EventDetail';
 import Login from './modules/Session/Login';
 import ForgotPassword from './modules/Session/ForgotPassword';
 import FavoriteList from './modules/Account/FavoriteList';
@@ -16,6 +17,11 @@ const routes = [
     path: '/events',
     exact: true,
     component: EventList
+  },
+  {
+    path: '/events/:id',
+    exact: true,
+    component: EventDetail
   },
   {
     path: '/login',

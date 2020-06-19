@@ -4,44 +4,47 @@ import EventContext from './eventContext';
 import axios from 'axios';
 import {
   GET_EVENTS,
-  EVENT_ERROR
+  EVENT_ERROR,
+  GET_EVENT
 } from '../states';
 
 const EventProvider = props => {
   const initialState = {
     events: [],
-    pagination: null,
-    filter: '',
+    event: null,
+    paging: null,
+    filter: {},
     error: null
   };
 
   const [state, dispatch] = useReducer(eventReducer, initialState);
 
   // Get events
-  const getEvents = async (filter = '') => {
+  const getEvents = async (filter = {}) => {
     try {
 
+      console.log('filter', filter);
+      let query = {};
       if (filter) {
-        let query = { ...filter };
+        query = { ...filter };
         filter = '';
         for (const key in query) {
           filter += `&${key}=${query[key]}`;
         }
-
+        
         filter = `?${filter.slice(1)}`;
       }
-
+      
       const response = await axios.get(`/api/v1/events${filter}`);
-
+      filter = { ...query };
       const eventPayload = {
-        data: response.data.data,
-        pagination: response.data.pagination,
+        response: response.data,
         filter
       };
 
       dispatch({
         type: GET_EVENTS,
-        payload: eventPayload 
+        payload: eventPayload
       });
     } catch (error) {
       dispatch({
@@ -51,13 +54,32 @@ const EventProvider = props => {
     }
   };
 
+  // Get Event
+  const getEvent = async (id) => {
+    try {
+      const response = await axios.get(`/api/v1/events/${id}`); 
+      
+      dispatch({
+        type: GET_EVENT,
+        payload: response.data
+      });
+    } catch (error) {
+      dispatch({
+        type: EVENT_ERROR,
+        payload: error
+      });
+    }
+  }
+
   return (
     <EventContext.Provider
       value={{
         events: state.events,
-        pagination: state.pagination,
+        paging: state.paging,
         filter: state.filter,
-        getEvents
+        event: state.event,
+        getEvents,
+        getEvent
       }}>
         { props.children }
     </EventContext.Provider>

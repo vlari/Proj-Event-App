@@ -1,9 +1,13 @@
-import React, { Fragment } from 'react';
+import React, 
+  { Fragment,
+    useState,
+    useContext } from 'react';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import InputBase from '@material-ui/core/InputBase';
+import EventContext from '../../../context/event/eventContext';
 
 const useStyles = makeStyles({
   root: {
@@ -26,19 +30,54 @@ const useStyles = makeStyles({
 });
 
 const EventSearchBar = () => {
+  const eventContext = useContext(EventContext);
+  const [text, setText] = useState('');
   const classes = useStyles();
+
+  const { filter, getEvents } = eventContext;
+
+  const clearFilter = () => {
+    if (filter.hasOwnPropery('filter')) {
+      delete filter.filter;
+      getEvents(filter);
+    }
+  };
+
+  const onTextChange = (e) => {
+    if (e.target.value) {
+      setText(e.target.value);
+    } else {
+      clearFilter();
+    }
+  };
+
+
+  // Test passing context members as props
+  const onSubmit = (e) => {
+    e.preventDefault();
+    console.log('text', text)
+    if (text) {
+      filter.filter = text
+      getEvents(filter);
+    }
+  };
 
   return (
     <Fragment>
       <Grid container maxwidth="sm">
         <Grid item xs={12} sm={12} md={6}>
-          <form className={classes.root}>
+          <form 
+            onSubmit={onSubmit}
+            className={classes.root}>
               <InputBase
                 className={classes.textField}
                 defaultValue=""
+                value={text}
                 inputProps={{ 'aria-label': 'naked' }}
+                onChange={onTextChange}
               />
               <Button 
+                type="submit"
                 variant="contained"
                 color="primary"
                 className={classes.searchButton}>

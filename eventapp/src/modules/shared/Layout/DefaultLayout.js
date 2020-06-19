@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import Navbar from '../../shared/Layout/Navbar';
 import Footer from '../../shared/Layout/Footer';
 import Container from '@material-ui/core/Container';
+import Grid from '@material-ui/core/Grid';
 import { Switch, Route } from 'react-router-dom';
 import routes from '../../../routes';
 
@@ -10,9 +11,6 @@ const DefaultLayout = (props) => {
   return (
    <Fragment>
      <Navbar />
-     <Container 
-      maxWidth="lg"
-      style={{ margin: '0px' }}>
         <Suspense>
           <Switch>
             {
@@ -28,7 +26,6 @@ const DefaultLayout = (props) => {
           </Switch>
         </Suspense>
 
-     </Container>
      {/* <Footer /> */}
    </Fragment>
   )
