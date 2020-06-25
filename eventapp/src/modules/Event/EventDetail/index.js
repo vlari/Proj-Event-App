@@ -1,10 +1,10 @@
 import React, 
-{ Fragment, 
+{ Fragment,
+  useState,
   useEffect,
   useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
@@ -15,11 +15,14 @@ import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
-import ShareIcon from '@material-ui/icons/Share';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import Grid from '@material-ui/core/Grid';
 import { getUtcDate, getShortDate } from '../../../utils/dateParser';
 import EventContext from '../../../context/event/eventContext';
+import EventMapLocation from '../EventMapLocation';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Dialog from '@material-ui/core/Dialog';
+import OrderDetail from '../../Order/OrderDetail';
 
 const useStyles = makeStyles({
   layout: {
@@ -50,6 +53,7 @@ const useStyles = makeStyles({
 
 const EventDetail = () => {
   const eventContext = useContext(EventContext);
+  const [open, setOpen] = useState(false);
   const { event, getEvent } = eventContext;
   let { id } = useParams();
 
@@ -59,6 +63,14 @@ const EventDetail = () => {
     getEvent(id);
     // eslint-disable-next-line
   }, []);
+
+  const openDialog = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (value) => {
+    setOpen(false);
+  };
 
   const getTags = (
     event && event.tags.map( (tag, index) => (
@@ -111,7 +123,10 @@ const EventDetail = () => {
                         { event.name }
                       </Typography>
                       <br/>
-                      <Typography component="p" variant="p">
+                      <Typography 
+                        component="p" 
+                        variant="p"
+                        >
                         { `by ${event.organizer.name}` }
                       </Typography>
                       <br/>
@@ -131,7 +146,8 @@ const EventDetail = () => {
                       <Button
                         variant="contained"
                         color="primary"
-                        className={styles.btnTickets}>
+                        className={styles.btnTickets}
+                        onClick={openDialog}>
                           { event.tickets.length ? 'Tickets' : 'Register' }
                       </Button>
                       <span className={styles.btnUserAction}>
@@ -185,7 +201,9 @@ const EventDetail = () => {
                       xs={12}
                       md={12}
                       className={styles.paddingCenter}>
-                        Map here
+                        <EventMapLocation 
+                          lng={event.location.coordinates[0]}
+                          lat={event.location.coordinates[1]}/>
                     </Grid>
                     <Grid
                       item
@@ -204,6 +222,11 @@ const EventDetail = () => {
                   </Grid>
                 </CardContent>
               </Card>
+              <OrderDetail 
+                open={open} 
+                onClose={handleClose} 
+                event={event}
+                />
             </Grid>
           }
         </Grid>

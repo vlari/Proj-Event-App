@@ -70,7 +70,7 @@ export const logout = (req, res, next) => {
 };
 
 export const getAccountUser = (req, res, next) => {
-    User.findById(req.user.id).isSelected('-password')
+    User.findById(req.user.id).select('-password')
         .then(user => {
             res.status(200).json({ data: user });
         },

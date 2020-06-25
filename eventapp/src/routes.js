@@ -1,11 +1,10 @@
 import React from 'react';
-import EventList from './modules/Event/EventList';
-import EventDetail from './modules/Event/EventDetail';
-import Login from './modules/Session/Login';
-import ForgotPassword from './modules/Session/ForgotPassword';
-import FavoriteList from './modules/Account/FavoriteList';
-
 const Home = React.lazy(() => import('./modules/Pages/Home'));
+const EventList = React.lazy(() => import('./modules/Event/EventList'));
+const EventDetail = React.lazy(() => import('./modules/Event/EventDetail'));
+const SignIn = React.lazy(() => import('./modules/Session/SignIn'));
+const ForgotPassword = React.lazy(() => import('./modules/Session/ForgotPassword'));
+const FavoriteList = React.lazy(() => import('./modules/Account/FavoriteList'));
 
 const routes = [
   {
@@ -24,9 +23,9 @@ const routes = [
     component: EventDetail
   },
   {
-    path: '/login',
+    path: '/signin',
     exact: true,
-    component: Login
+    component: SignIn
   },
   {
     path: '/forgotpassword',

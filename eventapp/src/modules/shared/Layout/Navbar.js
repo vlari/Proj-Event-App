@@ -1,20 +1,19 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
-import Badge from '@material-ui/core/Badge';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import MailIcon from '@material-ui/icons/Mail';
-import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import { Link as RouterLink } from 'react-router-dom';
 import Link from '@material-ui/core/Link';
+import { useAuth } from '../../../hooks/use-auth';
+import Divider from '@material-ui/core/Divider';
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -90,7 +89,8 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Navbar = () => {
+const Navbar = (props) => {
+  const auth = useAuth();
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -115,6 +115,11 @@ const Navbar = () => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
+  const onSignout = () => {
+    auth.signOut();
+    props.history.push('/');
+  };
+
   const menuId = 'layout-search-menu';
   const renderMenu = (
     <Menu
@@ -126,8 +131,34 @@ const Navbar = () => {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem onClick={handleMenuClose}>
+        <Typography component="p" variant="p">
+          User Name
+        </Typography>
+      </MenuItem>
+      <Divider variant="middle" />
+      <MenuItem onClick={handleMenuClose}>
+        <Link 
+          component={RouterLink} 
+          className={classes.navbarLink}
+          style={{ padding: '0' }} 
+          to='/events/tickets'>
+          Tickets
+        </Link>
+      </MenuItem> 
+      <MenuItem onClick={handleMenuClose}>
+        <Link
+          component={RouterLink} 
+          className={classes.navbarLink} 
+          style={{ padding: '0' }}
+          to='/events/favorite'>
+          Liked
+        </Link>
+      </MenuItem>
+      <Divider variant="middle" />
+      <MenuItem onClick={handleMenuClose}>Account Settings</MenuItem>
+      <Divider variant="middle" />
+      <MenuItem onClick={onSignout}>Sign Out</MenuItem>
     </Menu>
   );
 
@@ -142,34 +173,76 @@ const Navbar = () => {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem>
-        <IconButton aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={4} color="secondary">
-            <MailIcon />
-          </Badge>
-        </IconButton>
-        <p>Messages</p>
+      <MenuItem onClick={handleMenuClose}>
+        <Typography component="p" variant="p">
+          User Name
+        </Typography>
       </MenuItem>
-      <MenuItem>
-        <IconButton aria-label="show 11 new notifications" color="inherit">
-          <Badge badgeContent={11} color="secondary">
-            <NotificationsIcon />
-          </Badge>
-        </IconButton>
-        <p>Notifications</p>
+      <Divider variant="middle" />
+      <MenuItem onClick={handleMenuClose}>
+        <Link 
+          component={RouterLink} 
+          className={classes.navbarLink}
+          style={{ padding: '0' }} 
+          to='/events/tickets'>
+          Tickets
+        </Link>
+      </MenuItem> 
+      <MenuItem onClick={handleMenuClose}>
+        <Link
+          component={RouterLink} 
+          className={classes.navbarLink} 
+          style={{ padding: '0' }}
+          to='/events/favorite'>
+          Liked
+        </Link>
       </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <AccountCircle />
-        </IconButton>
-        <p>Profile</p>
+      <Divider variant="middle" />
+      <MenuItem onClick={onSignout}>
+        <p>Sign Out</p>
       </MenuItem>
     </Menu>
+  );
+
+  const defaultRoutes = (
+      <Typography>
+        <Link component={RouterLink} className={classes.navbarLink} to=''>
+          Pricing
+        </Link>
+        <Link 
+          component={RouterLink} 
+          className={classes.navbarLink} 
+          to='/signin'>
+          Sign In
+        </Link>
+      </Typography>
+  );
+
+  const userRoutes = (
+      <Typography>
+        <Link 
+          component={RouterLink} 
+          className={classes.navbarLink} 
+          to='/events/favorite'>
+          Likes
+        </Link>
+        <Link 
+          component={RouterLink} 
+          className={classes.navbarLink} 
+          to='/events/tickets'>
+          Tickets
+        </Link>
+      <IconButton
+        edge="end"
+        aria-label="account of current user"
+        aria-controls={menuId}
+        aria-haspopup="true"
+        onClick={handleProfileMenuOpen}
+        color="inherit"
+      >
+          <AccountCircle />
+        </IconButton> 
+      </Typography>
   );
 
   return (
@@ -196,36 +269,7 @@ const Navbar = () => {
         </div>
         <div className={classes.grow} />
         <div className={classes.sectionDesktop}>
-          <Typography>
-            <Link component={RouterLink} className={classes.navbarLink} to=''>
-              Pricing
-            </Link>
-          </Typography>
-          <Typography>
-            <Link component={RouterLink} className={classes.navbarLink} to='/login'>
-              Sign In
-            </Link>
-          </Typography>
-          {/* <IconButton aria-label="show 4 new mails" color="inherit">
-            <Badge badgeContent={4} color="secondary">
-              <MailIcon />
-            </Badge>
-          </IconButton>
-          <IconButton aria-label="show 17 new notifications" color="inherit">
-            <Badge badgeContent={17} color="secondary">
-              <NotificationsIcon />
-            </Badge>
-          </IconButton>
-          <IconButton
-            edge="end"
-            aria-label="account of current user"
-            aria-controls={menuId}
-            aria-haspopup="true"
-            onClick={handleProfileMenuOpen}
-            color="inherit"
-          >
-            <AccountCircle />
-          </IconButton> */}
+          { auth.user ? userRoutes : defaultRoutes }
         </div>
         <div className={classes.sectionMobile}>
           <IconButton
