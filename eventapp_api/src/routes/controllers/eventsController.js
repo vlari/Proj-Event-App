@@ -14,7 +14,7 @@ export const getEvents = (req, res, next) => {
     const { query, navigation, total } = req.queryParams;
 
     const page = parseInt(navigation.page, 10) || 1;
-    const limit = parseInt(navigation.limit, 10) || 2;
+    const limit = parseInt(navigation.limit, 10) || 20;
     const startIndex = (page - 1) * limit;
     const endIndex = page * limit;
 

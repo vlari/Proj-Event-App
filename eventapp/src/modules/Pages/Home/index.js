@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { 
+  useEffect,
+  useContext } from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
@@ -11,7 +13,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import Link from '@material-ui/core/Link';
 import bannerImage from '../../../assets/imgs/events.svg';
 import EventItem from '../../Event/EventItem';
-
+import EventContext from '../../../context/event/eventContext';
 
 const useStyles = makeStyles((theme) => ({
   mainMessage: {
@@ -41,6 +43,21 @@ const useStyles = makeStyles((theme) => ({
 
 const Home = props => {
   const classes = useStyles();
+  const eventContext = useContext(EventContext);
+
+  const { getEvents, events } = eventContext;
+
+  useEffect(() => {
+    getEvents({ limit: 8 });
+  }, []);
+
+  const eventList = (
+    events.map( (event, index) => (
+      <Grid item key={index} xs={12} sm={4} md={3}>
+        <EventItem event={event} id={event._id} />  
+      </Grid>
+    ))
+  );
 
   return (
     <React.Fragment>
@@ -69,30 +86,7 @@ const Home = props => {
             Latest Events
           </Typography>
           <Grid container spacing={2}>
-            <Grid item xs={12} sm={4} md={3}>
-              <EventItem />
-            </Grid>
-            <Grid item xs={12} sm={4} md={3}>
-              <EventItem />
-            </Grid>
-            <Grid item xs={12} sm={4} md={3}>
-              <EventItem />
-            </Grid>
-            <Grid item xs={12} sm={4} md={3}>
-              <EventItem />
-            </Grid>
-            <Grid item xs={12} sm={4} md={3}>
-              <EventItem />
-            </Grid>
-            <Grid item xs={12} sm={4} md={3}>
-              <EventItem />
-            </Grid>
-            <Grid item xs={12} sm={4} md={3}>
-              <EventItem />
-            </Grid>
-            <Grid item xs={12} sm={4} md={3}>
-              <EventItem />
-            </Grid>
+            { eventList }
             <br/>
             <Grid item xs={12} sm={12} md={12} className={classes.detailsButton}>
               <Link component={RouterLink} className={classes.buttonLink} to='/events'>

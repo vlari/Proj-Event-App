@@ -16,8 +16,8 @@ const router = express.Router();
 router.route('/events').get(getQuery, getEvents);
 router.route('/events/:id').get(getEvent);
 router.route('/events/categories').get(getEventCategories);
-router.route('/events').post(guard, createEvent);
-router.route('/events/:id').put(guard, updateEvent);
-router.route('/events/:id').delete(guard, deleteEvent);
+router.route('/events').post(guard, (req, res) => res.status(405).json({ data: 'Method not allowed' }));
+router.route('/events/:id').put(guard, (req, res) => res.status(405).json({ data: 'Method not allowed' }));
+router.route('/events/:id').delete(guard, (req, res) => res.status(405).json({ data: 'Method not allowed' }));
 
 export default router;

@@ -60,7 +60,7 @@ const EventItem = (props) => {
                 component="img"
                 alt="Party"
                 height="140"
-                image="https://media.timeout.com/images/105347841/630/472/image.jpg"
+                image={event.imageUrl}
                 title="Party"
               />
             </Link>

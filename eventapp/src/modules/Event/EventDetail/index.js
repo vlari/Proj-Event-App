@@ -23,6 +23,7 @@ import EventMapLocation from '../EventMapLocation';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Dialog from '@material-ui/core/Dialog';
 import OrderDetail from '../../Order/OrderDetail';
+import Link from '@material-ui/core/Link';
 
 const useStyles = makeStyles({
   layout: {
@@ -83,6 +84,8 @@ const EventDetail = () => {
     ))
   );
 
+  const preventDefault = (event) => event.preventDefault();
+
   console.log('event', event);
 
   return (
@@ -99,10 +102,10 @@ const EventDetail = () => {
                   <Grid item md={8}>
                     <CardMedia
                       component="img"
-                      alt="Party"
+                      alt="image"
                       height="300"
-                      image="https://media.timeout.com/images/105347841/630/472/image.jpg"
-                      title="Party"
+                      image={event.imageUrl}
+                      title={event.name}
                     />
                   </Grid>
                   <Grid 
@@ -128,6 +131,11 @@ const EventDetail = () => {
                         variant="p"
                         >
                         { `by ${event.organizer.name}` }
+                      </Typography>
+                      <Typography component="p" variant="p">
+                        <Link href="#" onClick={preventDefault}>
+                          { event.organizer.website && event.organizer.website }
+                        </Link>
                       </Typography>
                       <br/>
                       <Chip

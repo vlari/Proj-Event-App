@@ -19,7 +19,7 @@ const eventSchema = new Schema({
         type: String,
         required: [true, 'Please add a description'],
         minlength: 50,
-        maxlength: 100
+        maxlength: 300
     },
     date: {
         type: Date,

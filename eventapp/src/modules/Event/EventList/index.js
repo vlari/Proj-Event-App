@@ -72,7 +72,7 @@ const EventList = () => {
           <Grid item md={8}>
             <EventSearchBar />
             { eventList }       
-            {paging &&
+            {/* {paging &&
               <div className={classes.navigation}>
               <Pagination 
                 shape="rounded"
@@ -80,7 +80,7 @@ const EventList = () => {
                 count={paging.total} 
                 page={page} 
                 onChange={pageChange} />
-            </div>}
+            </div>} */}
           </Grid>
         </Grid>
       </Container>

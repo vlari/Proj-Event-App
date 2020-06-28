@@ -30,7 +30,7 @@ const useStyles = makeStyles({
   },
 });
 
-const EventItem = (props) => {
+const EventItem = ({ event, id }) => {
   const classes = useStyles();
 
   return (
@@ -38,10 +38,10 @@ const EventItem = (props) => {
       <CardActionArea>
         <CardMedia
           component="img"
-          alt="Party"
+          alt="image"
           height="140"
-          image="https://media.timeout.com/images/105347841/630/472/image.jpg"
-          title="Party"
+          image={event.imageUrl}
+          title={event.name}
         />
       </CardActionArea>
       <CardContent>
@@ -57,10 +57,10 @@ const EventItem = (props) => {
           variant="outline"
           className={classes.priceDetail}/>
         <Typography gutterBottom className={classes.title} variant="p" component="h4">
-          Mon, Jun 1, 2020 10:00 AM AST
+          { event.date }
         </Typography>
         <Typography component="h3">
-          The best meat party
+          { event.name }
         </Typography>
       </CardContent>
     </Card>
