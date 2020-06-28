@@ -1,6 +1,14 @@
 import Event from '../../db/models/event';
 import Category from '../../db/models/category';
 const ErrorResponse = require('../../../utils/errorResponse');
+import cloudinary from 'cloudinary/lib/v2';
+import env from '../../config/env';
+
+cloudinary.config({
+  cloud_name: env.CLOUD_NAME,
+  api_key: env.CLOUD_KEY,
+  api_secret: env.CLOUD_SECRET,
+});
 
 export const getEvents = (req, res, next) => {
     const { query, navigation, total } = req.queryParams;
