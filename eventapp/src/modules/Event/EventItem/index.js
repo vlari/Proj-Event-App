@@ -54,9 +54,9 @@ const EventItem = ({ event, id }) => {
         <Chip
           label="Free"
           color="default"
-          variant="outline"
+          variant="outlined"
           className={classes.priceDetail}/>
-        <Typography gutterBottom className={classes.title} variant="p" component="h4">
+        <Typography className={classes.title} component="p">
           { event.date }
         </Typography>
         <Typography component="h3">

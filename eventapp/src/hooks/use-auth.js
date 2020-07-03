@@ -55,7 +55,29 @@ const useProvideAuth = () => {
   }
 
   // Sign up
+  const signUp = async (formData) => {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    };
 
+    try {
+      const response = await axios.post('/api/v1/account/signup',
+        formData,
+        config);
+
+      localStorage.setItem('userToken', response.data.userToken);
+      
+      const loggedUser = getUser();
+      
+      console.log(loggedUser);
+      setUser(loggedUser);
+
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   // Get user
   const getUser = async () => {
@@ -87,6 +109,7 @@ const useProvideAuth = () => {
 
   return {
     user,
-    signIn
+    signIn,
+    signUp
   }
 }

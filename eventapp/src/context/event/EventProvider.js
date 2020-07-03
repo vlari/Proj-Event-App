@@ -23,7 +23,6 @@ const EventProvider = props => {
   const getEvents = async (filter = {}) => {
     try {
 
-      console.log('filter', filter);
       let query = {};
       if (filter) {
         query = { ...filter };

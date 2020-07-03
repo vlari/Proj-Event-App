@@ -20,7 +20,7 @@ function App() {
   const styles = useStyles();
 
   const loading = (
-    <Backdrop className={styles.backdrop} open={true}>
+      <Backdrop className={styles.backdrop} open={true}>
         <CircularProgress color="inherit" />
       </Backdrop>
   );

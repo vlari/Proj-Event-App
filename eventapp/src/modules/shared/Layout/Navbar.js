@@ -62,7 +62,7 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(1, 1, 1, 0),
     // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-    transition: theme.transitions.create('width'),
+    //transition: theme.transitions.create('width'),
     width: '100%',
     [theme.breakpoints.up('md')]: {
       width: '20ch',
@@ -132,7 +132,7 @@ const Navbar = (props) => {
       onClose={handleMenuClose}
     >
       <MenuItem onClick={handleMenuClose}>
-        <Typography component="p" variant="p">
+        <Typography component="p" variant="h5">
           User Name
         </Typography>
       </MenuItem>
@@ -174,7 +174,7 @@ const Navbar = (props) => {
       onClose={handleMobileMenuClose}
     >
       <MenuItem onClick={handleMenuClose}>
-        <Typography component="p" variant="p">
+        <Typography component="p" variant="h5">
           User Name
         </Typography>
       </MenuItem>
@@ -254,19 +254,6 @@ const Navbar = (props) => {
             E
           </Typography>
         </Link>
-        <div className={classes.search}>
-          <div className={classes.searchIcon}>
-            <SearchIcon />
-          </div>
-          <InputBase
-            placeholder="Search…"
-            classes={{
-              root: classes.inputRoot,
-              input: classes.inputInput,
-            }}
-            inputProps={{ 'aria-label': 'search' }}
-          />
-        </div>
         <div className={classes.grow} />
         <div className={classes.sectionDesktop}>
           { auth.user ? userRoutes : defaultRoutes }

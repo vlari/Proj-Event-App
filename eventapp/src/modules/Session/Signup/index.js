@@ -4,7 +4,6 @@ import React, {
   useEffect } from 'react'
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
-import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
@@ -13,9 +12,15 @@ import Link from '@material-ui/core/Link';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useAuth } from '../../../hooks/use-auth';
+import 'date-fns';
+import DateFnsUtils from '@date-io/date-fns';
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker,
+} from '@material-ui/pickers';
 
 const useStyles = makeStyles({
-  signInLayout: {
+  signUpLayout: {
     marginTop: '40px',
     textAlign: 'center'
   },
@@ -30,14 +35,28 @@ const useStyles = makeStyles({
   },
 });
 
-const SignIn = (props) => {
+const SignUp = (props) => {
   const propstyles = {};
   const theme = useTheme();
   const initialState = {
+    name: '',
+    dob: new Date(),
     email: '',
     password: ''
   };
   const validatorState = {
+    name: {
+      validate(name) { 
+        return name.length > 0
+      },
+      message: ''
+    },
+    dob: {
+      validate(dob) { 
+        return dob.length > 0
+      },
+      message: ''
+    },
     email: {
       validate(emailValue) { 
         return regexEmail.test(emailValue)
@@ -51,7 +70,7 @@ const SignIn = (props) => {
       message: ''
     }
   };
-  const [signInUser, setSigninUser] = useState(initialState);
+  const [signUpUser, setSignUpUser] = useState(initialState);
   const [validator, setValidator] = useState(validatorState);
   const regexEmail = /^(\D)+(\w)*((\.(\w)+)?)+@(\D)+(\w)*((\.(\D)+(\w)*)+)?(\.)[a-z]{2,}$/;
   const isSmallDevice = useMediaQuery(theme.breakpoints.down('xs'));
@@ -65,18 +84,18 @@ const SignIn = (props) => {
 
   }, [auth.user]);
 
-  const { email, password } = signInUser;
+  const { name, dob, email, password } = signUpUser;
   
   const classes = useStyles(propstyles);
 
   const onInputChange = (e) => {
-    setSigninUser({
-      ...signInUser,
+    setSignUpUser({
+      ...signUpUser,
       [e.target.name]: e.target.value
     })
   };
   
-  const onSignIn = (e) => {
+  const onSignUp = (e) => {
     e.preventDefault();
     const inputValidator = { ...validator };
 
@@ -87,7 +106,9 @@ const SignIn = (props) => {
     const isValid = !inputValidator.email.message.length && !inputValidator.password.message.length 
 
     if (isValid) {
-      auth.signIn({
+      auth.signUp({
+        name,
+        dob,
         email,
         password
       });
@@ -104,15 +125,48 @@ const SignIn = (props) => {
               E
             </Typography>
             <Typography className={classes.title}  component="h2" variant="p">
-              Log In
+              Sign Up
             </Typography>
             <Typography className={classes.subtitle} component="p" variant="p">
               Get started here
             </Typography>
             <form 
-              onSubmit={onSignIn}
+              onSubmit={onSignUp}
               noValidate 
               autoComplete="off">
+              <Grid xs={12} sm={12}>
+                <TextField
+                  id="name"
+                  error={validator.name.message.length > 0}
+                  helperText={validator.name.message}
+                  value={name}
+                  name="name"
+                  label="Name"
+                  variant="outlined"
+                  color="primary"
+                  className={classes.formField}
+                  onChange={onInputChange}
+                />
+              </Grid>
+              <Grid xs={12} sm={12}>
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                  <KeyboardDatePicker
+                      error={validator.dob.message.length > 0}
+                      helperText={validator.dob.message}
+                      value={dob}
+                      disableToolbar
+                      variant="inline"
+                      format="MM/dd/yyyy"
+                      margin="normal"
+                      id="date-picker-inline"
+                      label="Date of Birth"
+                      onChange={onInputChange}
+                      KeyboardButtonProps={{
+                        'aria-label': 'change date',
+                      }}
+                  />    
+                </MuiPickersUtilsProvider>
+              </Grid>
               <Grid xs={12} sm={12}>
                 <TextField
                   id="email"
@@ -149,20 +203,14 @@ const SignIn = (props) => {
                   variant="contained" 
                   color="primary"
                   className={classes.formField}>
-                  Sign In
+                  Sign Up
                 </Button>
               </Grid>
             </form>
             <br/>
             <Typography component="p" variant="p">
-              <Link component={RouterLink}  to='/forgotpassword'>
-                forgot password
-              </Link>
-            </Typography>
-            <br/>
-            <Typography component="p" variant="p">
-              <Link component={RouterLink}  to='/signup'>
-                don't have an account?
+              <Link component={RouterLink}  to='/signin'>
+                already have an account?
               </Link>
             </Typography>
           </Grid>

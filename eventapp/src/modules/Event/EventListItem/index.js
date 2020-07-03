@@ -50,7 +50,7 @@ const EventItem = (props) => {
 
 
   return (
-    <Grid container maxWidth="md">
+    <Grid container>
       <Grid item xs={12} sm={12} md={12}>
         <Card className={classes.root}>
           <CardActionArea 
@@ -66,7 +66,7 @@ const EventItem = (props) => {
             </Link>
           </CardActionArea>
           <CardContent className={classes.details}>
-            <Typography gutterBottom className={classes.title} variant="p" component="h4">
+            <Typography className={classes.title} component="p">
               { eventDate.toString() }
             </Typography>
             <Typography component="h3">
@@ -75,7 +75,7 @@ const EventItem = (props) => {
             <Chip
               label={ event.tickets.length ? 'Paid' : 'Free' }
               color="default"
-              variant="outline"
+              variant="outlined"
               className={classes.priceDetail}/>
             <span className={classes.cardAction}>
               <IconButton color="default" aria-label="delete">

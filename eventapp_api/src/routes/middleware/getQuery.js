@@ -11,7 +11,7 @@ export const getQuery = async (req, res, next) => {
       delete queryParams.filter;
     }
 
-    if (queryParams.date === 'anyDate') {
+    if (queryParams.date === 'anyDate' || !queryParams.date) {
       delete queryParams.date;
     }
 
@@ -24,7 +24,7 @@ export const getQuery = async (req, res, next) => {
 
     queryParams = cleanQuery(queryParams);
     queryParams.total = await Event.countDocuments(queryParams.query);
-    console.log(queryParams)
+    console.log('query filter params', queryParams);
     req.queryParams = queryParams;
     next();
   } else {

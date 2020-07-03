@@ -51,11 +51,8 @@ const EventSearchBar = () => {
     }
   };
 
-
-  // Test passing context members as props
   const onSubmit = (e) => {
     e.preventDefault();
-    console.log('text', text)
     if (text) {
       filter.filter = text
       getEvents(filter);
@@ -71,7 +68,6 @@ const EventSearchBar = () => {
             className={classes.root}>
               <InputBase
                 className={classes.textField}
-                defaultValue=""
                 value={text}
                 inputProps={{ 'aria-label': 'naked' }}
                 onChange={onTextChange}

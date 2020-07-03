@@ -33,8 +33,8 @@ const EventFilter = ({ getEvents }) => {
   const dateState = {
     date: {
       anyDate: 'outlined',
-      today: '',
-      tomorrow: ''
+      today: 'text',
+      tomorrow: 'text'
     },
     value: 'anyDate'
   };
@@ -42,8 +42,8 @@ const EventFilter = ({ getEvents }) => {
   const priceState = {
     price: {
       anyPrice: 'outlined',
-      free: '',
-      paid: ''
+      free: 'text',
+      paid: 'text'
     },
     value: 'anyPrice'
   };
@@ -55,7 +55,7 @@ const EventFilter = ({ getEvents }) => {
     let dateValue;
       switch (name) {
         case 'anyDate':
-          dateValue = '';
+          dateValue = 'anyDate';
           break;
         case 'today':
           dateValue = new Date();
@@ -78,14 +78,12 @@ const EventFilter = ({ getEvents }) => {
     updatedModel = { ...dateTemplate };
 
     for (const key in updatedModel.date) {
-      updatedModel.date[key] = '';
+      updatedModel.date[key] = 'text';
     }
 
     updatedModel.date[name] = 'outlined';
 
     updatedModel.value = getDateValue(name);
-
-    console.log(updatedModel);
 
     setDateTemplate({
       ...updatedModel
@@ -97,7 +95,7 @@ const EventFilter = ({ getEvents }) => {
     updatedModel = { ...priceTemplate };
 
     for (const key in updatedModel.price) {
-      updatedModel.price[key] = '';
+      updatedModel.price[key] = 'text';
     }
 
     updatedModel.price[name] = 'outlined';
@@ -128,9 +126,8 @@ const EventFilter = ({ getEvents }) => {
 
     <form onSubmit={onSubmit}>
         <Typography 
-          gutterbutton 
-          component="p" 
-          variant="p"
+          component="h5" 
+          variant="h5"
           className={classes.actionTitle}
           >
             <Box fontWeight="fontWeightMedium" m={1} fontSize={18}>
@@ -141,9 +138,8 @@ const EventFilter = ({ getEvents }) => {
 
         <FormControl className={classes.formControl}>
           <Typography 
-            gutterbutton 
-            component="p" 
-            variant="p"
+            component="h5" 
+            variant="h5"
             className={classes.actionTitle}
             >
               <Box fontWeight="fontWeightMedium" m={1} fontSize={18}>
@@ -175,9 +171,8 @@ const EventFilter = ({ getEvents }) => {
         <Divider variant="middle" />
         <FormControl className={classes.formControl}>
           <Typography 
-            gutterbutton 
-            component="p" 
-            variant="p"
+            component="h5" 
+            variant="h5"
             className={classes.actionTitle}
             >
               <Box fontWeight="fontWeightMedium" m={1} fontSize={18}>
@@ -209,7 +204,6 @@ const EventFilter = ({ getEvents }) => {
 
         {/* <FormControl className={classes.formControl}>
           <Typography 
-            gutterbutton 
             component="p" 
             variant="p"
             className={classes.actionTitle}

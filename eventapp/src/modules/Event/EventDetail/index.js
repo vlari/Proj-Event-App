@@ -32,6 +32,9 @@ const useStyles = makeStyles({
   mainTitle: {
     padding: '25px'
   },
+  subTitle: {
+    fontWeight: 'bold'
+  },
   middleDate: {
     color: '#4d4d4d'
   },
@@ -86,8 +89,6 @@ const EventDetail = () => {
 
   const preventDefault = (event) => event.preventDefault();
 
-  console.log('event', event);
-
   return (
     <Fragment>
       <Container 
@@ -113,8 +114,7 @@ const EventDetail = () => {
                     md={2}
                     className={styles.mainTitle}>
                       <Typography 
-                        component="h4" 
-                        variant="p"
+                        component="p" 
                         className={styles.titleDate}>
                         { getShortDate(event.date) }
                       </Typography>
@@ -128,11 +128,11 @@ const EventDetail = () => {
                       <br/>
                       <Typography 
                         component="p" 
-                        variant="p"
                         >
                         { `by ${event.organizer.name}` }
                       </Typography>
-                      <Typography component="p" variant="p">
+                      <Typography 
+                        component="p">
                         <Link href="#" onClick={preventDefault}>
                           { event.organizer.website && event.organizer.website }
                         </Link>
@@ -141,7 +141,7 @@ const EventDetail = () => {
                       <Chip
                         label={ event.tickets.length ? 'Paid' : 'Free' }
                         color="default"
-                        variant="outline"
+                        variant="outlined"
                         className={styles.priceDetail}/>
                   </Grid>
                 </Grid>
@@ -178,28 +178,26 @@ const EventDetail = () => {
                       md={2}
                       className={styles.paddingCenter}>
                         <Typography 
-                          component="h4" 
-                          variant="p"
+                          component="p" 
+                          className={styles.subTitle}
                           >
                             Date And Time
                         </Typography>
                         <Typography 
                           component="p" 
-                          variant="p"
                           >
                             { getUtcDate(event.date) }
                         </Typography>
                         <br/>
                         <br/>
                         <Typography 
-                          component="h4" 
-                          variant="p"
+                          component="p"
+                          className={styles.subTitle}
                           >
                             Location
                         </Typography>
                         <Typography 
                           component="p" 
-                          variant="p"
                           >
                             { event.location.fullAddress }
                         </Typography>
@@ -219,9 +217,8 @@ const EventDetail = () => {
                       md={12}
                       className={styles.paddingCenter}>
                         <Typography 
-                          component="h4" 
-                          variant="p"
-                          className={styles.titleDate}>
+                          component="p" 
+                          className={styles.subTitle}>
                             Tags
                         </Typography>
                         <br/>
