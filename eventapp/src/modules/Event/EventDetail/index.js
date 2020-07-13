@@ -6,7 +6,6 @@ import React,
 import { useParams } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
-import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
 import Container from '@material-ui/core/Container';
 import CardMedia from '@material-ui/core/CardMedia';
@@ -20,10 +19,10 @@ import Grid from '@material-ui/core/Grid';
 import { getUtcDate, getShortDate } from '../../../utils/dateParser';
 import EventContext from '../../../context/event/eventContext';
 import EventMapLocation from '../EventMapLocation';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Dialog from '@material-ui/core/Dialog';
 import OrderDetail from '../../Order/OrderDetail';
 import Link from '@material-ui/core/Link';
+import { useAuth } from '../../../hooks/use-auth';
+
 
 const useStyles = makeStyles({
   layout: {
@@ -41,7 +40,7 @@ const useStyles = makeStyles({
   priceDetail: {
     
   },
-  btnTickets: {
+  btnTicket: {
     float: 'left'
   },
   btnUserAction: {
@@ -55,7 +54,8 @@ const useStyles = makeStyles({
   }
 });
 
-const EventDetail = () => {
+const EventDetail = (props) => {
+  const auth = useAuth();
   const eventContext = useContext(EventContext);
   const [open, setOpen] = useState(false);
   const { event, getEvent } = eventContext;
@@ -69,6 +69,9 @@ const EventDetail = () => {
   }, []);
 
   const openDialog = () => {
+    if (!auth.user) {
+      props.history.push('/signin');
+    }
     setOpen(true);
   };
 
@@ -139,7 +142,7 @@ const EventDetail = () => {
                       </Typography>
                       <br/>
                       <Chip
-                        label={ event.tickets.length ? 'Paid' : 'Free' }
+                        label={ event.ticket ? 'Paid' : 'Free' }
                         color="default"
                         variant="outlined"
                         className={styles.priceDetail}/>
@@ -154,9 +157,9 @@ const EventDetail = () => {
                       <Button
                         variant="contained"
                         color="primary"
-                        className={styles.btnTickets}
+                        className={styles.btnTicket}
                         onClick={openDialog}>
-                          { event.tickets.length ? 'Tickets' : 'Register' }
+                          { event.ticket ? 'Ticket' : 'Register' }
                       </Button>
                       <span className={styles.btnUserAction}>
                         <IconButton color="default" aria-label="delete">
@@ -227,11 +230,11 @@ const EventDetail = () => {
                   </Grid>
                 </CardContent>
               </Card>
-              <OrderDetail 
-                open={open} 
-                onClose={handleClose} 
-                event={event}
-                />
+                <OrderDetail 
+                  open={open} 
+                  onClose={handleClose} 
+                  event={event}
+                  />
             </Grid>
           }
         </Grid>

@@ -1,4 +1,6 @@
-import React from 'react';
+import React, {
+  useState,
+  useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
@@ -7,8 +9,13 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Chip from '@material-ui/core/Chip';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
-import ShareIcon from '@material-ui/icons/Share';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
+import FavoriteIcon from '@material-ui/icons/Favorite';
+import { Link as RouterLink } from 'react-router-dom';
+import Link from '@material-ui/core/Link';
+import { useAuth } from '../../../hooks/use-auth';
+import { withRouter } from 'react-router-dom';
+import EventContext from '../../../context/event/eventContext';
 
 const useStyles = makeStyles({
   root: {
@@ -31,32 +38,55 @@ const useStyles = makeStyles({
 });
 
 const EventItem = ({ event, id }) => {
-  const classes = useStyles();
+  const auth = useAuth();
+  const eventContext = useContext(EventContext);
+  const [isFavorite, setFavorite] = useState(event.liked);
+  const styles = useStyles();
+
+  const onAddEvent = () => {
+    if (auth.user) {
+      event.liked = !isFavorite;
+
+      const result = !isFavorite 
+      ? eventContext.addEvent(event._id)
+      : eventContext.deleteEvent(event._id);
+
+      setFavorite(!isFavorite);
+    } else {
+      props.history.push('/');
+    }
+  };
 
   return (
-    <Card className={classes.root}>
+    <Card className={styles.root}>
       <CardActionArea>
+      <Link component={RouterLink} to={`/events/${id}`}>
         <CardMedia
           component="img"
-          alt="image"
+          alt={event.name}
           height="140"
           image={event.imageUrl}
           title={event.name}
         />
+      </Link>
       </CardActionArea>
       <CardContent>
-        <IconButton color="default" aria-label="delete">
-          <ShareIcon />
-        </IconButton>
-        <IconButton color="default" aria-label="delete">
-          <FavoriteBorderIcon />
+        <IconButton 
+          color={isFavorite ? 'secondary' : 'default'} 
+          aria-label="delete"
+          onClick={onAddEvent}>
+          {
+            isFavorite 
+            ? <FavoriteIcon />
+            : <FavoriteBorderIcon />
+          }
         </IconButton>
         <Chip
-          label="Free"
+          label={ event.ticket ? 'Paid' : 'Free' }
           color="default"
           variant="outlined"
-          className={classes.priceDetail}/>
-        <Typography className={classes.title} component="p">
+          className={styles.priceDetail}/>
+        <Typography className={styles.title} component="p">
           { event.date }
         </Typography>
         <Typography component="h3">
@@ -67,4 +97,4 @@ const EventItem = ({ event, id }) => {
   );
 }
 
-export default EventItem
+export default withRouter(EventItem);

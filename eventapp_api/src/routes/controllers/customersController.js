@@ -19,7 +19,7 @@ export const getSavedEvents = (req, res, next) => {
         error => next(error));
 };
 
-export const saveEvent = (req, res, next) => {
+export const updateEvent = (req, res, next) => {
     Collection.findOne({ userId: req.user._id })
         .then(collection => {
 
@@ -27,7 +27,7 @@ export const saveEvent = (req, res, next) => {
                 return next(new ErrorResponse('Collection not found', 404));
             }
 
-            collection.events.push(req.body);
+            collection.events.push(req.params.id);
             return collection.save();
         })
         .then(newCollection => {
@@ -45,10 +45,11 @@ export const deleteSavedEvent = (req, res, next) => {
             }
 
             const eventsCollection = collection.events.map(event => {
-                return _id != req.params.id;
+                return req.user._id != req.params.id;
             });
 
-            collection.events =eventsCollection;
+            const index = collection.events.indexOf(req.user._id.toString());
+            collection.events.splice(index, 1);
 
             return collection.save();
         })

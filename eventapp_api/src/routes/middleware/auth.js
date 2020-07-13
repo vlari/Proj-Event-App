@@ -1,5 +1,4 @@
 import jwt from 'jsonwebtoken';
-
 const ErrorResponse = require('../../../utils/errorResponse');
 import User from '../../db/models/user';
 import env from '../../config/env';
@@ -12,8 +11,9 @@ export const guard = (req, res, next) => {
     req.headers.authorization.startsWith('Bearer')
   ) {
     userToken = req.headers.authorization.split(' ')[1];
-  } else if (req.cookies.token) {
-    userToken = req.cookies.token;
+  } else if (req.cookies.userToken) {
+    // If using cookies
+    userToken = req.cookies.userToken;
   }
 
   if (!userToken) {

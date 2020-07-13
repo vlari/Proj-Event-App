@@ -165,12 +165,17 @@ export const patchPassword = (req, res, next) => {
 const getToken = (user, statusCode, res) => {
     const userToken = user.getSignedToken();
     
-    const cookieOptions = {
-        expires: new Date(Date.now() + env.COOKIE_EXPIRE * 24 * 60 * 60 * 1000),
-        httpOnly: true
-    };
+    // Using cookies
+    // const cookieOptions = {
+    //     expires: new Date(Date.now() + env.COOKIE_EXPIRE * 24 * 60 * 60 * 1000),
+    //     httpOnly: true
+    // };
 
-    res.status(statusCode).cookie('userToken', userToken, cookieOptions).json({
+    // res.status(statusCode).cookie('userToken', userToken, cookieOptions).json({
+    //     userToken
+    // });
+    
+    res.status(statusCode).json({
         userToken
     });
 };

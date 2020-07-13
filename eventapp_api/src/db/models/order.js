@@ -9,6 +9,12 @@ const orderSchema = new Schema({
         address: String,
         ticket: String
     },
+    payment: {
+        cardNumber: String,
+        csc: String,
+        postal: String,
+        expirationDate: String
+    },
     user: {
         userId: {
             type: String,

@@ -45,11 +45,15 @@ const eventSchema = new Schema({
         zipCode: String,
         country: String
     },
-    tickets: [],
+    tickets: {},
     tags: [String],
     imageUrl: {
         type: String,
         required: [true, 'Please add image url']
+    },
+    liked: {
+        type: Boolean,
+        default: false
     }
 },
 {

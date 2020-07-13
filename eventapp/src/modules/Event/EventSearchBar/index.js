@@ -2,7 +2,6 @@ import React,
   { Fragment,
     useState,
     useContext } from 'react';
-import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
@@ -37,18 +36,17 @@ const EventSearchBar = () => {
   const { filter, getEvents } = eventContext;
 
   const clearFilter = () => {
-    if (filter.hasOwnPropery('filter')) {
+    if (filter && filter.filter) {
       delete filter.filter;
       getEvents(filter);
     }
   };
 
   const onTextChange = (e) => {
-    if (e.target.value) {
-      setText(e.target.value);
-    } else {
+    if (!e.target.value) {
       clearFilter();
     }
+    setText(e.target.value);
   };
 
   const onSubmit = (e) => {

@@ -13,6 +13,7 @@ import Link from '@material-ui/core/Link';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useAuth } from '../../../hooks/use-auth';
+import { withRouter } from 'react-router-dom';
 
 const useStyles = makeStyles({
   signInLayout: {
@@ -92,6 +93,7 @@ const SignIn = (props) => {
         password
       });
       
+      props.history.push('/');
     }
   };
 
@@ -99,21 +101,21 @@ const SignIn = (props) => {
     <Fragment>
       <Container maxWidth="sm">
         <Grid container className={classes.signInLayout}>
-          <Grid xs={12} md={12}>
-            <Typography  component="h3" variant="h3">
+          <Grid item xs={12} md={12}>
+            <Typography  component="p" variant="h3">
               E
             </Typography>
-            <Typography className={classes.title}  component="h2" variant="p">
+            <Typography className={classes.title}  component="p">
               Log In
             </Typography>
-            <Typography className={classes.subtitle} component="p" variant="p">
+            <Typography className={classes.subtitle} component="p">
               Get started here
             </Typography>
             <form 
               onSubmit={onSignIn}
               noValidate 
               autoComplete="off">
-              <Grid xs={12} sm={12}>
+              <Grid item xs={12} sm={12}>
                 <TextField
                   id="email"
                   error={validator.email.message.length > 0}
@@ -128,7 +130,7 @@ const SignIn = (props) => {
                 />
               </Grid>
               <br/>
-              <Grid xs={12} sm={12}>
+              <Grid item xs={12} sm={12}>
                 <TextField
                   id="password"
                   error={validator.password.message.length > 0}
@@ -143,7 +145,10 @@ const SignIn = (props) => {
                 />
               </Grid>
               <br/>
-              <Grid xs={12} sm={12}>
+              <Grid 
+                item 
+                xs={12}
+                sm={12}>
                 <Button 
                   type="submit"
                   variant="contained" 
@@ -154,13 +159,13 @@ const SignIn = (props) => {
               </Grid>
             </form>
             <br/>
-            <Typography component="p" variant="p">
+            <Typography component="p">
               <Link component={RouterLink}  to='/forgotpassword'>
                 forgot password
               </Link>
             </Typography>
-            <br/>
-            <Typography component="p" variant="p">
+            <Divider variant="middle" />
+            <Typography component="p">
               <Link component={RouterLink}  to='/signup'>
                 don't have an account?
               </Link>
@@ -172,4 +177,4 @@ const SignIn = (props) => {
   )
 }
 
-export default SignIn
+export default withRouter(SignIn);

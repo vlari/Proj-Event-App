@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { useEffect } from 'react';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -14,6 +14,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import Link from '@material-ui/core/Link';
 import { useAuth } from '../../../hooks/use-auth';
 import Divider from '@material-ui/core/Divider';
+import { withRouter } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -98,6 +99,12 @@ const Navbar = (props) => {
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
+
+  useEffect(() => {
+    auth.getUser();
+    // eslint-disable-next-line
+  }, []);
+
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -117,7 +124,7 @@ const Navbar = (props) => {
 
   const onSignout = () => {
     auth.signOut();
-    props.history.push('/');
+    props.history.push('/events');
   };
 
   const menuId = 'layout-search-menu';
@@ -132,8 +139,8 @@ const Navbar = (props) => {
       onClose={handleMenuClose}
     >
       <MenuItem onClick={handleMenuClose}>
-        <Typography component="p" variant="h5">
-          User Name
+        <Typography component="p">
+          { auth.user && auth.user.name }
         </Typography>
       </MenuItem>
       <Divider variant="middle" />
@@ -142,7 +149,7 @@ const Navbar = (props) => {
           component={RouterLink} 
           className={classes.navbarLink}
           style={{ padding: '0' }} 
-          to='/events/tickets'>
+          to='/user/tickets'>
           Tickets
         </Link>
       </MenuItem> 
@@ -184,7 +191,7 @@ const Navbar = (props) => {
           component={RouterLink} 
           className={classes.navbarLink}
           style={{ padding: '0' }} 
-          to='/events/tickets'>
+          to='/user/tickets'>
           Tickets
         </Link>
       </MenuItem> 
@@ -206,9 +213,6 @@ const Navbar = (props) => {
 
   const defaultRoutes = (
       <Typography>
-        <Link component={RouterLink} className={classes.navbarLink} to=''>
-          Pricing
-        </Link>
         <Link 
           component={RouterLink} 
           className={classes.navbarLink} 
@@ -229,7 +233,7 @@ const Navbar = (props) => {
         <Link 
           component={RouterLink} 
           className={classes.navbarLink} 
-          to='/events/tickets'>
+          to='/user/tickets'>
           Tickets
         </Link>
       <IconButton
@@ -278,4 +282,4 @@ const Navbar = (props) => {
   )
 }
 
-export default Navbar;
+export default withRouter(Navbar);

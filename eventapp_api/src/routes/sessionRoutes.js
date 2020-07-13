@@ -3,6 +3,7 @@ import express from 'express';
 import {
     signUp,
     login,
+    logout,
     getAccountUser,
     recoverPassword,
     resetPassword,
@@ -14,6 +15,7 @@ const router = express.Router();
 
 router.post('/account/signup', signUp);
 router.post('/account/login', login);
+router.post('/account/logout', logout);
 router.get('/account/user', guard, getAccountUser);
 router.post('/account/password/change', guard, patchPassword);
 router.post('/account/password/recover', recoverPassword);

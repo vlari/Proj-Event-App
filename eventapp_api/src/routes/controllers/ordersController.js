@@ -2,9 +2,9 @@ import Order from '../../db/models/order';
 const ErrorResponse = require('../../../utils/errorResponse');
 
 export const getOrders = (req, res, next) => {
-    Order.find()
+    Order.find({ 'user.userId': req.user._id })
         .then(orders => {
-            res.status(200).json({ data: ordes });
+            res.status(200).json({ data: orders });
         },
         error => {
             next(new ErrorResponse('Error', 400));

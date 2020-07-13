@@ -22,6 +22,7 @@ const EventProvider = props => {
   // Get events
   const getEvents = async (filter = {}) => {
     try {
+      let config = {}
 
       let query = {};
       if (filter) {
@@ -33,8 +34,15 @@ const EventProvider = props => {
         
         filter = `?${filter.slice(1)}`;
       }
+
+      const token = localStorage.getItem('userToken');
+      if (token) {
+        config.headers = {
+            'Authorization': `Bearer ${token}`
+        };
+      }
       
-      const response = await axios.get(`/api/v1/events${filter}`);
+      const response = await axios.get(`/api/v1/events${filter}`, config);
       filter = { ...query };
       const eventPayload = {
         response: response.data,
@@ -53,7 +61,6 @@ const EventProvider = props => {
     }
   };
 
-  // Get Event
   const getEvent = async (id) => {
     try {
       const response = await axios.get(`/api/v1/events/${id}`); 
@@ -68,7 +75,49 @@ const EventProvider = props => {
         payload: error
       });
     }
-  }
+  };
+
+  // Add favorite Event
+  const addEvent = async (eventId) => {
+    try {
+      const config = {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('userToken')}`
+        }
+      };
+
+      const response = await axios.put(`/api/v1/user/collections/${eventId}`, {}, {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('userToken')}`
+        }
+      }); 
+      
+    } catch (error) {
+      dispatch({
+        type: EVENT_ERROR,
+        payload: error
+      });
+    }
+  };
+
+  // Add favorite Event
+  const deleteEvent = async (eventId) => {
+    try {
+      const config = {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('userToken')}`
+        }
+      };
+
+      const response = await axios.delete(`/api/v1/user/collections/${eventId}`,config); 
+      
+    } catch (error) {
+      dispatch({
+        type: EVENT_ERROR,
+        payload: error
+      });
+    }
+  };
 
   return (
     <EventContext.Provider
@@ -78,7 +127,9 @@ const EventProvider = props => {
         filter: state.filter,
         event: state.event,
         getEvents,
-        getEvent
+        getEvent,
+        addEvent,
+        deleteEvent
       }}>
         { props.children }
     </EventContext.Provider>

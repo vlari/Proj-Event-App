@@ -3,11 +3,15 @@ import './App.css';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import routes from '../../routes';
 import DefaultLayout from '../shared/Layout/DefaultLayout';
-import EventProvider from '../../context/event/EventProvider';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { makeStyles } from '@material-ui/core/styles';
 import Backdrop from '@material-ui/core/Backdrop';
+import Notification from '../shared/Notification';
+
+import EventProvider from '../../context/event/EventProvider';
 import { ProvideAuth } from '../../hooks/use-auth';
+import NotificationProvider from '../../context/notification/NotificationProvider';
+import OrderProvider from '../../context/order/OrderProvider';
 
 const useStyles = makeStyles((theme) => ({
   backdrop: {
@@ -28,20 +32,25 @@ function App() {
   return (
     <ProvideAuth>
       <EventProvider>
-        <BrowserRouter>
-          <Suspense fallback={ loading }>
-            <Switch>
-              {
-                Object.values(routes).map( (route, index) => 
-                  <Route 
-                  component={DefaultLayout}
-                  key={index}
-                  render={(props) => <DefaultLayout {...props} /> }/>
-                )
-              }
-            </Switch>
-          </Suspense>
-        </BrowserRouter>
+        <NotificationProvider>
+          <OrderProvider>
+            <BrowserRouter>
+              <Suspense fallback={ loading }>
+                <Switch>
+                  {
+                    Object.values(routes).map( (route, index) => 
+                      <Route 
+                      component={DefaultLayout}
+                      key={index}
+                      render={(props) => <DefaultLayout {...props} /> }/>
+                    )
+                  }
+                </Switch>
+                <Notification />
+              </Suspense>
+            </BrowserRouter>
+          </OrderProvider>
+        </NotificationProvider>
       </EventProvider>
     </ProvideAuth>
   );

@@ -12,12 +12,9 @@ import Link from '@material-ui/core/Link';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useAuth } from '../../../hooks/use-auth';
-import 'date-fns';
+
+import { MuiPickersUtilsProvider, DatePicker, KeyboardDatePicker  } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker,
-} from '@material-ui/pickers';
 
 const useStyles = makeStyles({
   signUpLayout: {
@@ -119,7 +116,7 @@ const SignUp = (props) => {
   return (
     <Fragment>
       <Container maxWidth="sm">
-        <Grid container className={classes.signInLayout}>
+        <Grid container className={classes.signUpLayout}>
           <Grid xs={12} md={12}>
             <Typography  component="h3" variant="h3">
               E
@@ -148,8 +145,22 @@ const SignUp = (props) => {
                   onChange={onInputChange}
                 />
               </Grid>
+              <br/>
               <Grid xs={12} sm={12}>
-                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <DatePicker
+                  name="dob"
+                  disableToolbar
+                  fullWidth="true"
+                  variant="inline"
+                  label="Date of Birth"
+                  value={dob}
+                  inputVariant="outlined"
+                  className={classes.formField}
+                  onChange={onInputChange}
+                />
+              </MuiPickersUtilsProvider>
+                {/* <MuiPickersUtilsProvider utils={DateFnsUtils}>
                   <KeyboardDatePicker
                       error={validator.dob.message.length > 0}
                       helperText={validator.dob.message}
@@ -165,8 +176,9 @@ const SignUp = (props) => {
                         'aria-label': 'change date',
                       }}
                   />    
-                </MuiPickersUtilsProvider>
+                </MuiPickersUtilsProvider> */}
               </Grid>
+              <br/>
               <Grid xs={12} sm={12}>
                 <TextField
                   id="email"
@@ -220,4 +232,4 @@ const SignUp = (props) => {
   )
 }
 
-export default SignIn
+export default SignUp;

@@ -14,6 +14,8 @@ import Link from '@material-ui/core/Link';
 import bannerImage from '../../../assets/imgs/events.svg';
 import EventItem from '../../Event/EventItem';
 import EventContext from '../../../context/event/eventContext';
+import { useAuth } from '../../../hooks/use-auth';
+import { withRouter } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   mainMessage: {
@@ -42,13 +44,16 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Home = props => {
+  const auth = useAuth();
   const classes = useStyles();
   const eventContext = useContext(EventContext);
 
   const { getEvents, events } = eventContext;
 
   useEffect(() => {
+    auth.getUser();
     getEvents({ limit: 8 });
+    // eslint-disable-next-line
   }, []);
 
   const eventList = (
@@ -102,4 +107,4 @@ const Home = props => {
   )
 }
 
-export default Home;
+export default withRouter(Home);

@@ -36,22 +36,22 @@ const useProvideAuth = () => {
         formData,
         config);
 
-      localStorage.setItem('userToken', response.data.userToken);
-      
-      const loggedUser = getUser();
-      
-      console.log(loggedUser);
-      setUser(loggedUser);
+        localStorage.setItem('userToken', response.data.userToken);
 
+      getUser();
     } catch (error) {
       console.log(error);
     }
   }
 
   // Sign out
-  const signOut = () => {
-    localStorage.removeItem('userToken');
-    setUser(null);
+  const signOut = async () => {
+    try {
+      localStorage.removeItem('userToken');
+      setUser(false);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   // Sign up
@@ -67,13 +67,7 @@ const useProvideAuth = () => {
         formData,
         config);
 
-      localStorage.setItem('userToken', response.data.userToken);
-      
-      const loggedUser = getUser();
-      
-      console.log(loggedUser);
-      setUser(loggedUser);
-
+      getUser();
     } catch (error) {
       console.log(error);
     }
@@ -89,7 +83,7 @@ const useProvideAuth = () => {
 
     try {
       const response = await axios.get('/api/v1/account/user', config);
-      return response.data.data;
+      setUser(response.data.data);
     } catch (error) {
       console.log(error);
     }
@@ -103,13 +97,20 @@ const useProvideAuth = () => {
     // e.g. sign in and/or sign out
     // for this call get user and it will determine
     // if valid depending on the token in the header.
-
+    // const loggedUser = getUser();
+    // if (loggedUser) {
+    //   setUser(loggedUser);
+    // } else {
+    //   setUser(false);
+    // }
 
   }, [])
 
   return {
     user,
+    getUser,
+    signUp,
     signIn,
-    signUp
+    signOut
   }
 }

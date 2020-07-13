@@ -1,16 +1,9 @@
 import Event from '../../db/models/event';
 import Category from '../../db/models/category';
 const ErrorResponse = require('../../../utils/errorResponse');
-import cloudinary from 'cloudinary/lib/v2';
-import env from '../../config/env';
+import Collection from '../../db/models/collection';
 
-cloudinary.config({
-  cloud_name: env.CLOUD_NAME,
-  api_key: env.CLOUD_KEY,
-  api_secret: env.CLOUD_SECRET,
-});
-
-export const getEvents = (req, res, next) => {
+export const getEvents = async (req, res, next) => {
     const { query, navigation, total } = req.queryParams;
 
     const page = parseInt(navigation.page, 10) || 1;
@@ -18,33 +11,43 @@ export const getEvents = (req, res, next) => {
     const startIndex = (page - 1) * limit;
     const endIndex = page * limit;
 
-    Event.find(query)
+    const events = await Event.find(query)
         .skip(startIndex)
-        .limit(limit)
-        .then(events => {
+        .limit(limit);
 
-            const pagination = {};
-            pagination.total = total;
-  
-            if (endIndex < total) {
-                pagination.next = {
-                    page: page + 1,
-                    limit
-                };
+    const pagination = {};
+    pagination.total = total;
+
+    if (endIndex < total) {
+        pagination.next = {
+            page: page + 1,
+            limit
+        };
+    }
+
+    if (startIndex > 0) {
+        pagination.prev = {
+            page: page - 1,
+            limit
+        };
+    }
+
+    if (req.user) {
+            const collection = await Collection.findOne({ userId: req.user._id });
+        
+            if (collection && collection.events) {
+        
+                collection.events.forEach(eventId => {
+                    events.forEach(event => {
+                        if (eventId.toString() === event._id.toString()) {
+                            event.liked = true;
+                        }
+                    })
+                });
             }
+    }
 
-            if (startIndex > 0) {
-                pagination.prev = {
-                    page: page - 1,
-                    limit
-                };
-            }
-
-            res.status(200).json({ count: events.length , data: events, pagination });
-        },
-        error => {
-            next(error);
-        });
+    res.status(200).json({ count: events.length , data: events, pagination });
 };
 
 export const getEvent = (req, res, next) => {

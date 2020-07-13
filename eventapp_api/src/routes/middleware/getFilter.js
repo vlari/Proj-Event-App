@@ -1,6 +1,10 @@
 import Event from '../../db/models/event';
+import { getUserToken } from '../../../utils/auth';
+import jwt from 'jsonwebtoken';
+import User from '../../db/models/user';
+import env from '../../config/env';
 
-export const getQuery = async (req, res, next) => {
+export const getFilter = async (req, res, next) => {
   if (req.query) {
     let queryParams = { ...req.query };
 
@@ -22,9 +26,17 @@ export const getQuery = async (req, res, next) => {
       delete queryParams.price;
     }
 
+    let userToken = getUserToken(req);
+
+    if (userToken) {
+      const token = jwt.verify(userToken, env.API_SECRET);
+
+      const loggedInUser = await User.findById(token.id);
+      req.user = loggedInUser;
+    }
+
     queryParams = cleanQuery(queryParams);
     queryParams.total = await Event.countDocuments(queryParams.query);
-    console.log('query filter params', queryParams);
     req.queryParams = queryParams;
     next();
   } else {

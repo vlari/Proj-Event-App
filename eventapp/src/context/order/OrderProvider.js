@@ -20,33 +20,39 @@ const OrderProvider = props => {
 
   const [state, dispatch] = useReducer(orderReducer, initialState);
 
-  const config = {
-    headers: {
-      'Authorization': `Bearer ${localStorage.getItem('userToken')}`
-    }
-  };
-
   // Get orders
-  const getOrders = () => {
+  const getOrders = async () => {
     try {
-      const response = axios.get('/api/v1/orders', config);
+      const config = {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('userToken')}`
+        }
+      };
+
+      const response = await axios.get('/api/v1/orders', config);
 
       dispatch({
         type: GET_ORDERS,
-        payload: response.data
+        payload: response.data.data
       });
     } catch (error) {
       dispatch({
         type: ORDER_ERROR,
-        payload: response.data
+        payload: error
       });
     }
   }
 
   // Get order
-  const getOrder = (id) => {
+  const getOrder = async (id) => {
     try {
-      const response = axios.get(`/api/v1/order/${id}`, config);
+      const config = {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('userToken')}`
+        }
+      };
+
+      const response = await axios.get(`/api/v1/orders/${id}`, config);
 
       dispatch({
         type: GET_ORDER,
@@ -55,15 +61,21 @@ const OrderProvider = props => {
     } catch (error) {
       dispatch({
         type: ORDER_ERROR,
-        payload: response.data
+        payload: error
       });
     }
   }
 
   // Place order
-  const placeOrder = (order) => {
+  const placeOrder = async (order) => {
     try {
-      const response = axios.post(`/api/v1/order/${id}`, order, config);
+      const config = {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('userToken')}`
+        }
+      };
+
+      const response = await axios.post('/api/v1/orders', order, config);
 
       dispatch({
         type: PLACE_ORDER,
@@ -72,7 +84,7 @@ const OrderProvider = props => {
     } catch (error) {
       dispatch({
         type: ORDER_ERROR,
-        payload: response.data
+        payload: error
       });
     }
   }
