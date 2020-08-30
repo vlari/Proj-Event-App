@@ -6,9 +6,22 @@
   </a>
 </p>
 
-> Event app using mern stack
+> Event app using MERN stack
 
 ### 🏠 [Homepage](https://github.com/vlari/Proj-Event-App#readme)
+
+## Description
+
+This is an Eventbrite clone app with some of the relevant features of that platform such as searching and filtering events, create an account, save events, event order list and purchase an event.
+
+## Screenshots
+
+![](images/screenshot_1.png)
+
+![](images/screenshot_2.png)
+
+![](images/screenshot_3.png)
+
 
 ## Install
 
@@ -16,9 +29,11 @@
 npm install
 ```
 
-## Description
+## Run Project
 
-This is a simple Eventbrite clone app with some of the relevant features of that platform.
+```
+npm run dev
+```
 
 ## Author
 
@@ -36,4 +51,3 @@ Copyright © 2020 [obed](https://github.com/vlari).<br />
 This project is [ISC](https://github.com/vlari/Proj-Event-App/blob/master/LICENSE) licensed.
 
 ***
-_This README was generated with ❤️ by [readme-md-generator](https://github.com/kefranabg/readme-md-generator)_

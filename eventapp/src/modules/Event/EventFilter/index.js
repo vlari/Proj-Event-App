@@ -2,18 +2,20 @@ import React, {
     Fragment, 
     useState,
     useContext } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import FormControl from '@material-ui/core/FormControl';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import EventContext from '../../../context/event/eventContext';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 
-const useStyles = makeStyles( (theme) => ({
+const useStyles = makeStyles( (theme, isSmallDevice) => ({
   formControl: {
-    margin: theme.spacing(1),
+    margin: isSmallDevice ? 'auto' : theme.spacing(1),
     minWidth: 130,
+    display: isSmallDevice ? 'inline-block' : 'inline-flex'
   },
   btnField: {
     backgoundColor: '#e8902e'
@@ -28,7 +30,9 @@ const useStyles = makeStyles( (theme) => ({
 
 const EventFilter = ({ getEvents }) => {
   const eventContext = useContext(EventContext);
-  const classes = useStyles(); 
+  const theme = useTheme();
+  const isSmallDevice = useMediaQuery(theme.breakpoints.only('xs'));
+  const classes = useStyles(theme, isSmallDevice);
 
   const dateState = {
     date: {
@@ -136,7 +140,9 @@ const EventFilter = ({ getEvents }) => {
         </Typography>
         <br/>
 
-        <FormControl className={classes.formControl}>
+        <FormControl 
+          className={classes.formControl}
+          style={{ display: isSmallDevice ? 'inline-block' : 'inline-flex' }}>
           <Typography 
             component="h5" 
             variant="h5"
@@ -169,7 +175,9 @@ const EventFilter = ({ getEvents }) => {
           </Button>
         </FormControl>
         <Divider variant="middle" />
-        <FormControl className={classes.formControl}>
+        <FormControl 
+          className={classes.formControl}
+          style={{ display: isSmallDevice ? 'inline-block' : 'inline-flex' }}>
           <Typography 
             component="h5" 
             variant="h5"

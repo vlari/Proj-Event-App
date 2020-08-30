@@ -1,7 +1,7 @@
 import React, {
   useState,
   useContext } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
@@ -17,12 +17,13 @@ import Link from '@material-ui/core/Link';
 import { useAuth } from '../../../hooks/use-auth';
 import { withRouter } from 'react-router-dom';
 import EventContext from '../../../context/event/eventContext';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles( isSmallDevice => ({
   root: {
     width: '100%',
     display: 'flex',
-    height: 140,
+    height: isSmallDevice ? 'auto' : 140,
     margin: '40px 0px 20px 0px;'
   },
   title: {
@@ -45,12 +46,14 @@ const useStyles = makeStyles({
     float: 'right',
     marginTop: '20px'
   }
-});
+}));
 
 const EventListItem = (props) => {
   const auth = useAuth();
   const eventContext = useContext(EventContext);
-  const styles = useStyles();
+  const theme = useTheme();
+  const isSmallDevice = useMediaQuery(theme.breakpoints.only('xs'));
+  const styles = useStyles(isSmallDevice);
   const { event, id } = props;
   const [isFavorite, setFavorite] = useState(event.liked);
   const eventDate = new Date(Date.parse(event.date));
@@ -59,11 +62,14 @@ const EventListItem = (props) => {
     if (auth.user) {
       event.liked = !isFavorite;
 
-      const result = !isFavorite 
-      ? eventContext.addEvent(event._id)
-      : eventContext.deleteEvent(event._id);
+      if (!isFavorite) {
+        eventContext.addEvent(event._id)
+      } else {
+        eventContext.deleteEvent(event._id);
+      }
 
       setFavorite(!isFavorite);
+      window.location.reload(false);
     } else {
       props.history.push('/');
     }
@@ -93,7 +99,7 @@ const EventListItem = (props) => {
               { event.name }
             </Typography>
             <Chip
-              label={ event.ticket ? 'Paid' : 'Free' }
+              label={ parseInt(event.ticket.price, 10) === 0 ? 'Free' : 'Paid' }
               color="default"
               variant="outlined"
               className={styles.priceDetail}/>

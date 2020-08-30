@@ -15,6 +15,7 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
+import FavoriteIcon from '@material-ui/icons/Favorite';
 import Grid from '@material-ui/core/Grid';
 import { getUtcDate, getShortDate } from '../../../utils/dateParser';
 import EventContext from '../../../context/event/eventContext';
@@ -58,15 +59,16 @@ const EventDetail = (props) => {
   const auth = useAuth();
   const eventContext = useContext(EventContext);
   const [open, setOpen] = useState(false);
-  const { event, getEvent } = eventContext;
-  let { id } = useParams();
-
   const styles = useStyles();
-
+  const { id } = useParams();
+  
   useEffect(() => {
-    getEvent(id);
+    eventContext.getEvent(id);
     // eslint-disable-next-line
   }, []);
+  
+  const { event } = eventContext;
+  const [isFavorite, setFavorite] = useState(false);
 
   const openDialog = () => {
     if (!auth.user) {
@@ -77,6 +79,22 @@ const EventDetail = (props) => {
 
   const handleClose = (value) => {
     setOpen(false);
+  };
+
+  const onAddEvent = () => {
+    if (auth.user) {
+      event.liked = !isFavorite;
+
+      if (!isFavorite) {
+        eventContext.addEvent(event._id);
+      } else {
+        eventContext.deleteEvent(event._id);
+      }
+
+      setFavorite(!isFavorite);
+    } else {
+      props.history.push('/');
+    }
   };
 
   const getTags = (
@@ -142,7 +160,7 @@ const EventDetail = (props) => {
                       </Typography>
                       <br/>
                       <Chip
-                        label={ event.ticket ? 'Paid' : 'Free' }
+                        label={ parseInt(event.ticket.price, 10) === 0 ? 'Paid' : 'Free' }
                         color="default"
                         variant="outlined"
                         className={styles.priceDetail}/>
@@ -159,11 +177,18 @@ const EventDetail = (props) => {
                         color="primary"
                         className={styles.btnTicket}
                         onClick={openDialog}>
-                          { event.ticket ? 'Ticket' : 'Register' }
+                          { parseInt(event.ticket.price, 10) === 0  ? 'Register' : 'Ticket' }
                       </Button>
                       <span className={styles.btnUserAction}>
-                        <IconButton color="default" aria-label="delete">
-                          <FavoriteBorderIcon />
+                        <IconButton 
+                          color={isFavorite ? 'secondary' : 'default'} 
+                          aria-label="delete"
+                          onClick={onAddEvent}>
+                          {
+                            isFavorite
+                            ? <FavoriteIcon />
+                            : <FavoriteBorderIcon />
+                          }
                         </IconButton>
                       </span>
                     </Grid>

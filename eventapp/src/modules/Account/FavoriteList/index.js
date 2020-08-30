@@ -1,4 +1,7 @@
-import React, { Fragment } from 'react';
+import React, { 
+  Fragment,
+  useEffect,
+  useContext } from 'react';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
@@ -6,6 +9,9 @@ import EventListItem from '../../Event/EventListItem';
 import EventBusyOutlinedIcon from '@material-ui/icons/EventBusyOutlined';
 import { Link as RouterLink } from 'react-router-dom';
 import Link from '@material-ui/core/Link';
+import { useAuth } from '../../../hooks/use-auth';
+import EventContext from '../../../context/event/eventContext';
+import Container from '@material-ui/core/Container';
 
 const useStyles = makeStyles({
   root: {
@@ -34,57 +40,75 @@ const useStyles = makeStyles({
   }
 });
 
-const FavoriteList = () => {
+const FavoriteList = (props) => {
+  const auth = useAuth();
+  const eventContext = useContext(EventContext);
+  const { getFavoriteEvents, filteredEvents } = eventContext;
   const styles = useStyles();
 
-  const favoriteEvents = (
-    <Grid item xs={12} sm={8} md={8}> 
-      <EventListItem />
-    </Grid>
-  );
+  useEffect(() => {
+    if (auth.user) {
+      getFavoriteEvents();
+    } else {
+      props.history.push('/');
+    }
+    // eslint-disable-next-line
+  }, []);
 
-  const renderEmptyList = (
-    <div className={styles.emptyList}>
-      <EventBusyOutlinedIcon color="primary" />
-    </div>
+  const eventList = (
+    filteredEvents && 
+    filteredEvents.map( (event, index) => (
+      <EventListItem key={index} event={event} id={event._id} />  
+    ))
+    // : <div className={styles.emptyList}>
+    // <EventBusyOutlinedIcon
+    //   color="primary" 
+    //   className={styles.emptyIcon}/>
+    // <Typography 
+    //   component="h3" 
+    //   variant="p"
+    //   className={styles.message}>
+    //   Currently you don't have any favorite events
+    // </Typography>
+    // <br/>
+    // <Typography component="p" variant="p">
+    //   <Link 
+    //     component={RouterLink}
+    //     to='/events'
+    //     color="primary"
+    //     className={styles.buttonLink}>
+    //       Browse events here
+    //     </Link>
+    //   </Typography>
+    // </div> 
   );
 
   return (
     <Fragment>
-      <Grid container maxWidth="md" className={styles.root}>
-        <Grid item xs={12} sm={12} md={12}>
-          <Typography 
-            component="h3" 
-            variant="h3"
-            className={styles.title}>
-            Likes
-          </Typography>
-        </Grid>
-        <Grid item xs={12} sm={12} md={12}>
-          {/* <EventListItem /> */}
-          <div className={styles.emptyList}>
-            <EventBusyOutlinedIcon
-              color="primary" 
-              className={styles.emptyIcon}/>
+      <Container>
+        <Grid 
+          container 
+          maxWidth="md" 
+          className={styles.root}>
+          <Grid item md={3}>
             <Typography 
               component="h3" 
-              variant="p"
-              className={styles.message}>
-              Currently you don't have any favorite events
+              variant="h3"
+              className={styles.title}>
+              Likes
             </Typography>
-            <br/>
-            <Typography component="p" variant="p">
-              <Link 
-                component={RouterLink}
-                to='/events'
-                color="primary"
-                className={styles.buttonLink}>
-                  Browse events here
-              </Link>
-            </Typography>
-          </div>
+          </Grid>
+          <Grid 
+            item 
+            md={8}
+            sm={6}
+            xs={12}>
+            {
+              eventList
+            }
+          </Grid>
         </Grid>
-      </Grid>
+      </Container>
     </Fragment>
   )
 }

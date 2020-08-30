@@ -47,7 +47,7 @@ const useStyles = makeStyles({
 });
 
 const OrderDetail = (props) => {
-  const auth = useAuth();
+  // const auth = useAuth();
   const orderContext = useContext(OrderContext);
   const notificationContext = useContext(NotificationContext);
   const { onClose, open, event } = props;
@@ -199,7 +199,7 @@ const OrderDetail = (props) => {
                   item
                   xs={12} md={8}>
                     <List>
-                      {event.ticket
+                      {parseInt(event.ticket.price, 10) !== 0
                         ? ticketList
                         : <Typography
                             component="p"

@@ -63,7 +63,12 @@ const TicketList = (props) => {
 
   const ticketList = (
     orders.map( (order, index) => (
-      <Grid key={index} item xs={12} sm={12} md={12}>
+      <Grid 
+        key={index} 
+        item 
+        xs={12} 
+        sm={12} 
+        md={12}>
         <Card className={styles.root}>
           <CardContent style={{ width: 'inherit' }}>
             <Typography
@@ -88,6 +93,8 @@ const TicketList = (props) => {
     ))
   );
 
+  // Might not use this one. Consider replace 
+  // With a spinner also in FavoriteList component.
   const renderEmptyList = (
     <div className={styles.emptyList}>
       <ReceiptIcon
@@ -115,8 +122,8 @@ const TicketList = (props) => {
   return (
     <Fragment>
       <Container>
-        <Grid container 
-          maxWidth="md" 
+        <Grid 
+          container 
           className={styles.root}>
           <Grid item md={3}>
             <Typography 
@@ -127,8 +134,9 @@ const TicketList = (props) => {
             </Typography>
           </Grid>
           <Grid item md={4}>
-            { orders.length &&
-              ticketList
+            { orders.length 
+            ? ticketList 
+            : null
             }
           </Grid>
         </Grid>

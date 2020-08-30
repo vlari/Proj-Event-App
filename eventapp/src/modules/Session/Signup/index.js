@@ -13,7 +13,7 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useAuth } from '../../../hooks/use-auth';
 
-import { MuiPickersUtilsProvider, DatePicker, KeyboardDatePicker  } from '@material-ui/pickers';
+import { MuiPickersUtilsProvider, DatePicker  } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 
 const useStyles = makeStyles({

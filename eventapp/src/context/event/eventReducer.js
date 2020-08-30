@@ -1,6 +1,7 @@
 import {
   GET_EVENTS,
   GET_EVENT,
+  GET_FAVORITE_LIST,
   EVENT_ERROR,
 } from '../states';
 
@@ -14,6 +15,12 @@ export default (state, action) => {
         paging: response.pagination,
         filter: action.payload.filter,
         textFilter: action.payload.textFilter
+      };
+    case GET_FAVORITE_LIST:
+      const responseList = action.payload.response;
+      return {
+        ...state,
+        filteredEvents: state.events.filter(e => responseList.data.events.includes(e._id))
       };
     case GET_EVENT:
       return {

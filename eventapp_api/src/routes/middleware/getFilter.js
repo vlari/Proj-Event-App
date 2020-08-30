@@ -21,7 +21,7 @@ export const getFilter = async (req, res, next) => {
 
     if (queryParams.price) {
       if (queryParams.price !== 'anyPrice') {
-        queryParams.tickets = getPriceQuery(queryParams.price);
+        queryParams['ticket.price'] = getPriceQuery(queryParams.price);;
       }
       delete queryParams.price;
     }
@@ -46,14 +46,7 @@ export const getFilter = async (req, res, next) => {
 };
 
 const getPriceQuery = (type) => {
-    let price = {};
-
-    if (type === 'free') {
-        price = { $size: 0 };
-    } else if (type === 'paid') {
-        price = { $not: { $size: 0 } };
-    } 
-
+    let price = type === 'free' ? '0' : { $gt:  '0' };
     return price;
 };
 

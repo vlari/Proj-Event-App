@@ -1,7 +1,8 @@
 import React, { 
   Fragment,
   useState,
-  useEffect } from 'react'
+  useEffect,
+  useContext } from 'react'
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Divider from '@material-ui/core/Divider';
@@ -14,6 +15,7 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useAuth } from '../../../hooks/use-auth';
 import { withRouter } from 'react-router-dom';
+import NotificationContext from '../../../context/notification/notificationContext';
 
 const useStyles = makeStyles({
   signInLayout: {
@@ -54,6 +56,7 @@ const SignIn = (props) => {
   };
   const [signInUser, setSigninUser] = useState(initialState);
   const [validator, setValidator] = useState(validatorState);
+  const notificationContext = useContext(NotificationContext)
   const regexEmail = /^(\D)+(\w)*((\.(\w)+)?)+@(\D)+(\w)*((\.(\D)+(\w)*)+)?(\.)[a-z]{2,}$/;
   const isSmallDevice = useMediaQuery(theme.breakpoints.down('xs'));
   propstyles.formFieldSize = isSmallDevice ? 'auto' : '45ch';
@@ -92,9 +95,9 @@ const SignIn = (props) => {
         email,
         password
       });
-      
-      props.history.push('/');
-    }
+
+        props.history.push('/');
+      }
   };
 
   return (

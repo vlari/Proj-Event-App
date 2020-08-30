@@ -1,13 +1,10 @@
 import React, { Fragment, Suspense } from 'react'
-import PropTypes from 'prop-types'
 import Navbar from '../../shared/Layout/Navbar';
 import Footer from '../../shared/Layout/Footer';
-import Container from '@material-ui/core/Container';
-import Grid from '@material-ui/core/Grid';
 import { Switch, Route } from 'react-router-dom';
 import routes from '../../../routes';
 
-const DefaultLayout = (props) => {
+const DefaultLayout = () => {
   return (
    <Fragment>
      <Navbar />
@@ -25,7 +22,6 @@ const DefaultLayout = (props) => {
             }
           </Switch>
         </Suspense>
-
      {/* <Footer /> */}
    </Fragment>
   )

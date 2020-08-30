@@ -1,15 +1,14 @@
 import React, { useEffect } from 'react';
-import { fade, makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import InputBase from '@material-ui/core/InputBase';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
-import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MoreIcon from '@material-ui/icons/MoreVert';
+import GitHubIcon from '@material-ui/icons/GitHub';
 import { Link as RouterLink } from 'react-router-dom';
 import Link from '@material-ui/core/Link';
 import { useAuth } from '../../../hooks/use-auth';
@@ -124,7 +123,7 @@ const Navbar = (props) => {
 
   const onSignout = () => {
     auth.signOut();
-    props.history.push('/events');
+    props.history.push('/');
   };
 
   const menuId = 'layout-search-menu';
@@ -145,6 +144,14 @@ const Navbar = (props) => {
       </MenuItem>
       <Divider variant="middle" />
       <MenuItem onClick={handleMenuClose}>
+        <IconButton 
+          color="primary"
+          href="https://github.com/vlari" 
+          aria-label="github account">
+          <GitHubIcon />
+        </IconButton>
+      </MenuItem> 
+      <MenuItem onClick={handleMenuClose}>
         <Link 
           component={RouterLink} 
           className={classes.navbarLink}
@@ -158,7 +165,7 @@ const Navbar = (props) => {
           component={RouterLink} 
           className={classes.navbarLink} 
           style={{ padding: '0' }}
-          to='/events/favorite'>
+          to='/user/favorites'>
           Liked
         </Link>
       </MenuItem>
@@ -182,10 +189,18 @@ const Navbar = (props) => {
     >
       <MenuItem onClick={handleMenuClose}>
         <Typography component="p" variant="h5">
-          User Name
+          { auth.user && auth.user.name }
         </Typography>
       </MenuItem>
       <Divider variant="middle" />
+      <MenuItem onClick={handleMenuClose}>
+        <IconButton 
+          color="primary"
+          href="https://github.com/vlari" 
+          aria-label="github account">
+          <GitHubIcon />
+        </IconButton>
+      </MenuItem> 
       <MenuItem onClick={handleMenuClose}>
         <Link 
           component={RouterLink} 
@@ -200,7 +215,7 @@ const Navbar = (props) => {
           component={RouterLink} 
           className={classes.navbarLink} 
           style={{ padding: '0' }}
-          to='/events/favorite'>
+          to='/user/favorites'>
           Liked
         </Link>
       </MenuItem>
@@ -213,6 +228,12 @@ const Navbar = (props) => {
 
   const defaultRoutes = (
       <Typography>
+        <IconButton 
+          color="primary"
+          href="https://github.com/vlari" 
+          aria-label="github account">
+          <GitHubIcon />
+        </IconButton>
         <Link 
           component={RouterLink} 
           className={classes.navbarLink} 
@@ -224,10 +245,16 @@ const Navbar = (props) => {
 
   const userRoutes = (
       <Typography>
+        <IconButton 
+          color="primary"
+          href="https://github.com/vlari" 
+          aria-label="github account">
+          <GitHubIcon />
+        </IconButton>
         <Link 
           component={RouterLink} 
           className={classes.navbarLink} 
-          to='/events/favorite'>
+          to='/user/favorites'>
           Likes
         </Link>
         <Link 
@@ -276,6 +303,7 @@ const Navbar = (props) => {
       </Toolbar>
     </AppBar>
     <Toolbar />
+    
     {renderMobileMenu}
     {renderMenu}
   </div>

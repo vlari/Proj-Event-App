@@ -30,7 +30,7 @@ const routes = [
     component: TicketList
   },
   {
-    path: '/favorites',
+    path: '/user/favorites',
     exact: true,
     component: FavoriteList
   },

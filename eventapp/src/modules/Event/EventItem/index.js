@@ -37,9 +37,10 @@ const useStyles = makeStyles({
   },
 });
 
-const EventItem = ({ event, id }) => {
+const EventItem = (props) => {
   const auth = useAuth();
   const eventContext = useContext(EventContext);
+  const { event, id } = props;
   const [isFavorite, setFavorite] = useState(event.liked);
   const styles = useStyles();
 
@@ -47,9 +48,11 @@ const EventItem = ({ event, id }) => {
     if (auth.user) {
       event.liked = !isFavorite;
 
-      const result = !isFavorite 
-      ? eventContext.addEvent(event._id)
-      : eventContext.deleteEvent(event._id);
+      if (!isFavorite) {
+        eventContext.addEvent(event._id)
+      } else {
+        eventContext.deleteEvent(event._id);
+      }
 
       setFavorite(!isFavorite);
     } else {
@@ -82,7 +85,7 @@ const EventItem = ({ event, id }) => {
           }
         </IconButton>
         <Chip
-          label={ event.ticket ? 'Paid' : 'Free' }
+          label={ parseInt(event.ticket.price, 10) === 0 ? 'Free' : 'Paid' }
           color="default"
           variant="outlined"
           className={styles.priceDetail}/>

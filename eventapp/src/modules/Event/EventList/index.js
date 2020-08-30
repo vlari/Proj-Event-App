@@ -2,24 +2,24 @@ import React, { Fragment, useContext, useEffect, useState } from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
-import Button from '@material-ui/core/Button';
 import EventListItem from '../../Event/EventListItem';
 import EventSearchBar from '../../Event/EventSearchBar';
 import { makeStyles } from '@material-ui/core/styles';
 import EventFilter from '../../Event/EventFilter';
 import EventContext from '../../../context/event/eventContext';
-import Pagination from '@material-ui/lab/Pagination';
+// import Button from '@material-ui/core/Button';
+// import Pagination from '@material-ui/lab/Pagination';
 
-import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
-import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
+// import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+// import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 
 const useStyles = makeStyles( (theme) => ({
   layout: {
     marginLeft: '0px'
   },
   actionPanel: {
-    backgroundColor: '#f2f2f2',
-    height: '900px',
+    backgroundColor: 'lenear-gradient(180deg, #f2f2f2 0%, #FFF 35%)',
+    height: '100%',
     paddingLeft: '15px !important'
   },
   navigation: {
@@ -40,13 +40,13 @@ const EventList = () => {
     // eslint-disable-next-line
   }, [pageQuery]);
 
-  const pageChange = (event, value) => {
-    let newPage = value > page ? paging.next.page : paging.prev.page;
+  // Not using pagination
+  // const pageChange = (event, value) => {
 
-    setQuery({ page: newPage });
+  //   setQuery({ page: newPage });
 
-    setPage(value);
-  };
+  //   setPage(value);
+  // };
 
   const eventList = (
     events.map( (event, index) => (
@@ -65,11 +65,16 @@ const EventList = () => {
           spacing={8}>
           <Grid 
             item 
-            md={2} 
+            md={2}
+            sm={2}
+            xs={12} 
             className={classes.actionPanel}>
             <EventFilter getEvents={getEvents} />
           </Grid>
-          <Grid item md={8}>
+          <Grid 
+            item 
+            md={8}
+            sm={10}>
             <EventSearchBar />
             { eventList }       
             {/* {paging &&

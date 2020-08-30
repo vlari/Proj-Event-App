@@ -5,13 +5,15 @@ import axios from 'axios';
 import {
   GET_EVENTS,
   EVENT_ERROR,
-  GET_EVENT
+  GET_EVENT,
+  GET_FAVORITE_LIST
 } from '../states';
 
 const EventProvider = props => {
   const initialState = {
     events: [],
     event: null,
+    filteredEvents: null,
     paging: null,
     filter: {},
     error: null
@@ -77,8 +79,8 @@ const EventProvider = props => {
     }
   };
 
-  // Add favorite Event
-  const addEvent = async (eventId) => {
+  // Get favorite events
+  const getFavoriteEvents = async (eventId) => {
     try {
       const config = {
         headers: {
@@ -86,7 +88,30 @@ const EventProvider = props => {
         }
       };
 
-      const response = await axios.put(`/api/v1/user/collections/${eventId}`, {}, {
+      const response = await axios.get('/api/v1/user/collections', config); 
+      
+      const filter = { };
+      const eventPayload = {
+        response: response.data,
+        filter
+      };
+
+      dispatch({
+        type: GET_FAVORITE_LIST,
+        payload: eventPayload
+      });
+    } catch (error) {
+      dispatch({
+        type: EVENT_ERROR,
+        payload: error
+      });
+    }
+  };
+
+  // Add favorite event
+  const addEvent = async (eventId) => {
+    try {
+      await axios.put(`/api/v1/user/collections/${eventId}`, {}, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('userToken')}`
         }
@@ -109,7 +134,7 @@ const EventProvider = props => {
         }
       };
 
-      const response = await axios.delete(`/api/v1/user/collections/${eventId}`,config); 
+      await axios.delete(`/api/v1/user/collections/${eventId}`,config); 
       
     } catch (error) {
       dispatch({
@@ -123,13 +148,15 @@ const EventProvider = props => {
     <EventContext.Provider
       value={{
         events: state.events,
+        filteredEvents: state.filteredEvents,
         paging: state.paging,
         filter: state.filter,
         event: state.event,
         getEvents,
         getEvent,
         addEvent,
-        deleteEvent
+        deleteEvent,
+        getFavoriteEvents
       }}>
         { props.children }
     </EventContext.Provider>

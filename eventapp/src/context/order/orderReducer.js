@@ -12,7 +12,7 @@ export default (state, action) => {
           ...state,
           orders: action.payload
         };     
-      break;
+        break;
     case GET_ORDER:
         return {
           ...state,
