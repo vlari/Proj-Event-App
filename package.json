@@ -24,7 +24,6 @@
   "homepage": "https://github.com/vlari/Proj-Event-App#readme",
   "dependencies": {
     "@material-ui/lab": "^4.0.0-alpha.56",
-    "cloudinary": "^1.22.0",
     "concurrently": "^5.2.0",
     "mapbox-gl": "^1.11.0",
     "react-router-dom": "^5.2.0"

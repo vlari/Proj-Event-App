@@ -18,9 +18,6 @@ const env = {
     SMTP_PASSWORD: process.env.SMTP_PASSWORD,
     EMAIL_FROM: process.env.EMAIL_FROM,
     NAME_FROM: process.env.NAME_FROM,
-    CLOUD_NAME: process.env.CLOUD_NAME,
-    CLOUD_KEY: process.env.CLOUD_KEY,
-    CLOUD_SECRET: process.env.CLOUD_SECRET
 };
 
 module.exports = env;
